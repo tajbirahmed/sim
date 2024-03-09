@@ -12,10 +12,10 @@ interface PageProps {
 const NavComp = (props: PageProps) => {
     return (
         <Link href={props.link}>
-            <div className='px-5 hover:bg-gray-100 rounded-full'>
-                <div className='container mx-auto px-2'>
-                    <p className='font-bold text-slate-900 hover:text-slate-500'>
-                        { props.title}
+            <div className='px-5 hover:bg-gray-200 hover:rounded-lg'>
+                <div className='w-fit'>
+                    <p className='font-bold text-slate-800 hover:{text-slate-900 }'>
+                        { props.title }
                     </p>
                 </div>
             </div>

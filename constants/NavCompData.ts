@@ -1,6 +1,6 @@
 export const NavData = [
   {
-    title: "Semster", 
+    title: "Semester", 
     link: "/semester"
   }, 
   {
