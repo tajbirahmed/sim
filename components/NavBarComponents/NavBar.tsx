@@ -30,7 +30,7 @@ const NavBar = () => {
                     </div>
                 </div>  
             </Link>
-            <div className='flex flex-row justify-center align-middle '>
+            <div className='flex flex-row justify-center items-center '>
                 {NavData.map((item, index) => (
                     <NavComp
                         key={index}
