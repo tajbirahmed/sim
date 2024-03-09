@@ -11,7 +11,7 @@ const SideBar = ({ toggleSidebar, setToggleSideBar }: PageProps) => {
     return (
         (
             <div className={`flex flex-col min-h-screen max-h-screen 
-                            w-[${toggleSidebar ? 300 : 6}px] rounded-lg` }>
+                            w-[${toggleSidebar ? 300 : 6}px] rounded-lg shadow-xl` }>
                 <div className='w-6 h-6 hover:bg-slate-200 rounded-lg flex flex-row justify-center items-center '>
                     <button onClick={() => setToggleSideBar(!toggleSidebar)}>
                         <AlignLeft size={18} />
