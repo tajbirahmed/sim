@@ -2,6 +2,8 @@ import React from 'react'
 import { AlignLeft } from 'lucide-react';
 import SideBarComp from './SideBarComp';
 import { semesterData } from '@/constants/SemesterInfo';
+import { Button } from '../ui/button';
+import Link from 'next/link';
 interface PageProps {
     toggleSidebar: boolean,
     setToggleSideBar: (toggleSideBar: boolean) => void
@@ -18,12 +20,15 @@ const SideBar = ({ toggleSidebar, setToggleSideBar }: PageProps) => {
                     </button>
                 </div>
                 {toggleSidebar ? (
-                    <div className='flex flex-col items-center px-5 overflow-hidden overflow-y-auto max-h-screen'>
+                    <div className='flex flex-col items-center px-5 overflow-hidden overflow-y-auto max-h-screen shadow-slate-200 '>
                         {semesterData.map((item, index) => (
+                            
                             <SideBarComp
                                 title={ item.title}
                             />
+                            
                         ))}
+                        <Button variant="default" className='bg-blue-500 text-black font-medium hover:bg-blue-800 hover:font-semibold min-w-40'>A button</Button>
                     </div>
                 ) : (null)
                 }
