@@ -28,7 +28,9 @@ const SideBar = ({ toggleSidebar, setToggleSideBar }: PageProps) => {
                             />
                             
                         ))}
-                        <Button variant="default" className='bg-blue-500 text-black font-medium hover:bg-blue-800 hover:font-semibold min-w-40'>A button</Button>
+                        <Button variant="default" className='mt-10'>
+                            Raise an issue
+                        </Button>
                     </div>
                 ) : (null)
                 }

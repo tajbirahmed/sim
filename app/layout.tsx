@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/NavBarComponents/NavBar";
 import FooterBar from "@/components/FooterComponents/FooterBar";
+import SideBar from "@/components/SideBar";
+import { useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 // 1. font selection. 
@@ -19,10 +21,15 @@ export default function RootLayout({
         <html lang="en">
             <body className={inter.className}>
                 <NavBar />
-                {children}
-                <div className="flex-end">
-                    <FooterBar />
+                <div className="flex flex-row">
+                    <SideBar
+                    />
+                    {children}
                 </div>
+                    
+                {/* <div className="flex-end">
+                    <FooterBar />
+                </div> */}
             </body>
         </html>
     );
