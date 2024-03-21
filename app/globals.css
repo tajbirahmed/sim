@@ -1,33 +1,83 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Dashboard.css */
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+.dashboard-container {
+  padding: 20px;
+  border-radius: 10px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.welcome-message {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.name {
+  color: #007bff;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.grid-container {
+  width: 100%;
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #af6d6d;
+  margin-bottom: 10px;
+}
+
+.grid-item {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.item-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #773737;
+  margin-bottom: 10px;
+}
+
+.item-info {
+  font-size: 16px;
+  color: #666;
+}
+
+.user-card {
+  background-color: #7d0f0f;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.avatar {
+  margin-right: 20px;
+}
+
+.info {
+  width: 100%;
+}
+
+.info-text {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.new-elements {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.element-info {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 10px;
 }
