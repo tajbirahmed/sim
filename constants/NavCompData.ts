@@ -19,4 +19,8 @@ export const NavData = [
     title: "Result",
     link: "/result"
   },
+  {
+    title: "Dashboard",
+    link: "/dashboard"
+  },
 ]
