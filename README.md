@@ -2,6 +2,12 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+* First create a empty folder and open it in terminal and  clone git by -> "git clone -b papan https://github.com/tajbirahmed/sim.git' command
+
+* Secondly go to project directory by "cd sim"
+
+* open it in vs code by "code ."
+
 First, run the development server:
 
 ```bash
