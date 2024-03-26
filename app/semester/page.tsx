@@ -3,12 +3,14 @@ import { Plus } from 'lucide-react';
 import React from 'react'
 import { Button } from "@/components/ui/button"
 import { CalendarComp } from '@/components/SemesterComponents/CalendarComp';
+import ProcedureProgess from '@/components/testComponets/ProcedureProgess';
 
 
 const Semester = () => {
   const [date, setDate] = React.useState<Date>()
   return (
     <div className='flex flex-col ml-5 mt-5 space-y-10'>
+      {/* <ProcedureProgess /> */}
       <div className='pt-10'>
 
       </div>

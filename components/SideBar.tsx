@@ -1,5 +1,5 @@
 "use client";
-import { Home } from 'lucide-react'
+import { Home, HomeIcon, Table2, LayoutGrid, LayoutDashboard, } from 'lucide-react'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import SideBarComp from './SideBarComp';
@@ -19,25 +19,32 @@ const SideBar = () => {
       />
       <SideBarComp 
         title='Home'
+        link="/"
+        icon={<HomeIcon size={ 18 } className='mt-[4px]' /> }
         selected={selected}
         setSelected={setSelected}
       />
       <SideBarComp
         title='Dashboard'
+        link='/dashboard'
+        icon={<LayoutDashboard size={18} className='mt-[4px]' />}
         selected={selected}
         setSelected={setSelected}
       />
       <SideBarComp
         title='Semester'
+        link='/semester'
         selected={selected}
         setSelected={setSelected}
       />
       <SideBarComp
         title='Course'
+        link='/result'
         selected={selected}
         setSelected={setSelected}
       />
       <SideBarComp
+        link='/result'
         title='Result'
         selected={selected}
         setSelected={setSelected}
