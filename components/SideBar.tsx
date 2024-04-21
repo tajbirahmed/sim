@@ -12,7 +12,7 @@ const SideBar = () => {
   const [selected, setSelected] = useState('Home');
   
   return (
-    <div className=" mt-10 max-h-screen min-h-screen min-w-64 overflow-y-auto sticky flex flex-col 
+    <div className="h-[94vh] min-w-44 overflow-y-auto sticky flex flex-col shadow-md shadow-slate-500 dark:shadow-slate-800 rounded-r-xl
     ">
       <ProjectInfoComp 
           
@@ -20,14 +20,14 @@ const SideBar = () => {
       <SideBarComp 
         title='Home'
         link="/"
-        icon={<HomeIcon size={ 18 } className='mt-[4px]' /> }
+        icon={<HomeIcon size={ 15 } className='mt-[4px]' /> }
         selected={selected}
         setSelected={setSelected}
       />
       <SideBarComp
         title='Dashboard'
         link='/dashboard'
-        icon={<LayoutDashboard size={18} className='mt-[4px]' />}
+        icon={<LayoutDashboard size={15} className='mt-[4px]' />}
         selected={selected}
         setSelected={setSelected}
       />
@@ -49,7 +49,7 @@ const SideBar = () => {
         selected={selected}
         setSelected={setSelected}
       />
-      <div className='flex-1 flex flex-col justify-end pb-16'>
+      <div className='flex-1 flex flex-col justify-end'>
         <ProfileComp
         />
       </div>

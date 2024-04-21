@@ -25,11 +25,11 @@ const SideBarComp = ({ title , link, icon, selected, setSelected }: SideBarProps
       >
         <div className='flex flex-row space-x-3'>
           {icon ? icon : (
-            <Table2 size={18} className='mt-[4px]' />
+            <Table2 size={15} className='mt-[4px]' />
 
           )}
           <div>
-            <h2 className='font-semibold text-[18px]'>{ title }</h2>
+            <h2 className='font-semibold text-[16px]'>{ title }</h2>
           </div>
         </div>
         {selected === title && (

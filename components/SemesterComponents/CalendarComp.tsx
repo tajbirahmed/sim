@@ -39,6 +39,7 @@ export function CalendarComp({ date, setDate} : CalendarProps) {
           selected={date}
           onSelect={setDate}
           initialFocus
+          className=""
         />
       </PopoverContent>
     </Popover>
