@@ -51,16 +51,16 @@ const Semester = () => {
             </Button>
           </div>
           <div>
-            <p>Smester wise annoucment will appear here</p>
+            <p>Annoucment will appear here</p>
           </div>
         </div>
       </div>
-      <div className='flex flex-col space-y-5'>
+      {/* <div className='flex flex-col space-y-5'>
         <h1 className='font-bold text-[32px] text-slate-700 hover:text-slate-600 dark:text-white'>
           Important Notices
         </h1>
         
-      </div>
+      </div> */}
 
     </div>
   )
