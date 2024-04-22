@@ -28,10 +28,12 @@ export default function RootLayout({
                         disableTransitionOnChange
                     >
                     <NavBar />
-                <div className="flex flex-row">
-                    <SideBar />
-                    {children}
-                </div>
+                    <div className="flex flex-row">
+                        <SideBar />
+                        
+                        {children}
+                    
+                    </div>
                     
                 {/* <div className="flex-end">
                     <FooterBar />

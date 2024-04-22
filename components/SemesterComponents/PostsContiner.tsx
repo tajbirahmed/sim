@@ -8,6 +8,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { Input } from '../ui/input';
 
 const PostsContiner = ({ 
     postId,
@@ -69,7 +70,7 @@ const PostsContiner = ({
                   <AvatarImage src={authorImageUrl} alt="@shadcn" />
                   <AvatarFallback className={'rounded-lg text-[#0c4c6c] dark:text-white'}>PP</AvatarFallback>
               </Avatar>
-              <input type="text" placeholder='Add a comment' className='rounded-lg border-[0.5px] w-full placeholder:text-[14px] pl-1' />
+              <Input type="text" placeholder='Add a comment' className='rounded-lg font-mono w-full placeholder:text-[14px] pl-1' />
               <div className='self-center'>  
                   <SendHorizonal size={18} className='text-black dark:text-white' />
               </div>
