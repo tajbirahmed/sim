@@ -6,7 +6,7 @@ import { CalendarComp } from '@/components/SemesterComponents/CalendarComp';
 import { Input } from "@/components/ui/input"
 import ReminderComponent from '@/components/SemesterComponents/ReminderComponent';
 import NavigateComp from '@/components/NavigateComp';
-import { SemesterProvider } from '@/contexts/SemesterContexts';
+
 
 
 const Semester = () => {
@@ -18,11 +18,12 @@ const Semester = () => {
   return (
     <div className='flex flex-col ml-5  h-[94vh] overflow-y-auto w-full no-scrollbar pt-6'>
       {/* <ProcedureProgess /> */}
-      <SemesterProvider>
-        <NavigateComp
-          title="Announcements"
-        />
-      </SemesterProvider>
+      
+      <NavigateComp
+        title="Announcements"
+        make={ true }
+      />
+    
       {section === "announcements" ? 
         (<><div className='flex flex-col space-y-5 pt-2'>
           <div className='flex flex-row justify-between pr-1'>
