@@ -24,8 +24,8 @@ const NavigateComp = ({
         <ChevronRight size={14} className="text-black dark:text-white pt-[1px]" />
         <p className='text-black dark:text-white text-[15px] pt-[2px] font-medium'>Student</p>
         <ChevronRight size={14} className="text-black dark:text-white pt-[1px]" />
-        <p className='text-black dark:text-white text-[15px] pt-[2px] font-medium w-[100px]'>
-          {semester}{semester === 1 ? "st" : semester === 2 ? "nd" : semester === 3 ? "rd" : "th"}{" Semester"}
+        <p className='text-black dark:text-white text-[15px] pt-[2px] font-medium w-auto'>
+          {semester}<sup>{semester === 1 ? "st" : semester === 2 ? "nd" : semester === 3 ? "rd" : "th"}</sup> {" Semester"}
         </p>
         {title && (
           <>
