@@ -20,8 +20,8 @@ const PostsContiner = ({
     comment
 } : StudentPost) => {
   return (
-      <div className="flex flex-col space-y-2 px-5 py-3 border-[1px] border-black dark:border-white rounded-md
-        shadow-xs shadow-black dark:shadow-white
+      <div className="flex flex-col space-y-2 px-5 py-3 border-[0.2px] border-black dark:border-white rounded-md
+        shadow-sm shadow-black dark:shadow-white
     ">
         {/* post author */}
         <div className="flex flex-row justify-between">
