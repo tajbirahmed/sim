@@ -6,22 +6,26 @@ import { CalendarComp } from '@/components/SemesterComponents/CalendarComp';
 import { Input } from "@/components/ui/input"
 import ReminderComponent from '@/components/SemesterComponents/ReminderComponent';
 import NavigateComp from '@/components/NavigateComp';
+import { SemesterProvider } from '@/contexts/SemesterContexts';
 
 
 const Semester = () => {
   const [date, setDate] = useState<Date>()
   const [semester, setSemester] = useState("6th");
-  const [titleNav, setTitleNav] = useState<string[]>([`${semester} semester`, "announcements"]);
+  
   const [section, setSection] = useState("announcements");
+
   return (
-    <div className='flex flex-col ml-5  h-[94vh] overflow-y-auto w-[1100px] overflow-x-hidden no-scrollbar pt-6'>
+    <div className='flex flex-col ml-5  h-[94vh] overflow-y-auto w-full no-scrollbar pt-6'>
       {/* <ProcedureProgess /> */}
-      <NavigateComp
-        title={titleNav}
-      />
+      <SemesterProvider>
+        <NavigateComp
+          title="Announcements"
+        />
+      </SemesterProvider>
       {section === "announcements" ? 
         (<><div className='flex flex-col space-y-5 pt-2'>
-          <div className='flex flex-row justify-between'>
+          <div className='flex flex-row justify-between pr-1'>
             <h1 className='font-bold text-[32px] text-slate-700 hover:text-slate-600 dark:text-white'>Announcements</h1>
             <p className='font-semibold text-[16px] self-center'>{ date && `${date.toLocaleDateString('en-GB', {
               day: 'numeric',
