@@ -15,8 +15,6 @@ const SideBarComp = ({ title , link, icon, selected, setSelected }: SideBarProps
   const handleClick = () => {
     setSelected(title.toLowerCase());
   }
-  console.log("===>", selected, title);
-  
   return (
     <div className='flex flex-col space-y-1'>
       <Link

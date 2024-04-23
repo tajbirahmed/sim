@@ -4,7 +4,7 @@ import "./globals.css";
 import NavBar from "@/components/NavBarComponents/NavBar";
 import FooterBar from "@/components/FooterComponents/FooterBar";
 import SideBar from "@/components/SideBar";
-import { useState } from "react";
+import { Toaster } from "@/components/ui/toaster"
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { SemesterProvider } from "@/contexts/SemesterContexts";
 import { SideBarProvider } from "@/contexts/SideBarContext";
@@ -42,6 +42,7 @@ export default function RootLayout({
                     {/* <div className="flex-end">
                     <FooterBar />
                 </div> */}
+                    <Toaster />
                 </ThemeProvider>
             </body>
         </html>
