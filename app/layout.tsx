@@ -6,6 +6,7 @@ import FooterBar from "@/components/FooterComponents/FooterBar";
 import SideBar from "@/components/SideBar";
 import { useState } from "react";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { SemesterProvider } from "@/contexts/SemesterContexts";
 
 const inter = Inter({ subsets: ["latin"] });
 // 1. font selection. 
@@ -30,8 +31,9 @@ export default function RootLayout({
                     <NavBar />
                     <div className="flex flex-row">
                         <SideBar />
-                        
-                        {children}
+                        <SemesterProvider>
+                            {children}
+                        </SemesterProvider>
                     
                     </div>
                     

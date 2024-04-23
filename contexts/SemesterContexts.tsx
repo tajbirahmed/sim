@@ -1,3 +1,6 @@
+"use client"; 
+
+
 import React, { createContext, useState } from 'react';
 interface Semester {
   semester: number;
