@@ -25,12 +25,13 @@ export function CalendarComp({ date, setDate} : CalendarProps) {
         <Button
           variant={"outline"}
           className={cn(
-            "w-[280px] justify-start text-left font-normal",
+            "w-[350px] text-left font-normal flex flex-row justify-between",
             !date && "text-muted-foreground text-[15px]"
           )}
         >
-          <CalendarIcon className="mr-2 h-4 w-4" />
+          
           {date ? format(date, "PPP") : <span>Pick a date</span>}
+          {!date ? <CalendarIcon className="h-4 w-4" /> : null}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
@@ -39,7 +40,7 @@ export function CalendarComp({ date, setDate} : CalendarProps) {
           selected={date}
           onSelect={setDate}
           initialFocus
-          className=""
+          
         />
       </PopoverContent>
     </Popover>
