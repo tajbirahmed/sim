@@ -5,7 +5,7 @@ import BarChart from "@/components/BarChart";
 
 export default function Dashboard() {
   return (
-    <div className="w-full  flex flex-col  ">
+    <div className="w-full flex flex-col h-[94vh] overflow-y-auto no-scrollbar pt-6 ">
       {/* Welcome Message */}
       <p className="text-lg font-bold text-gray-800 ">
         Welcome, <span className="text-blue-500">John Doe!</span>
