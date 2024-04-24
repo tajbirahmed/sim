@@ -70,7 +70,7 @@ const PostsContiner = ({
                   <AvatarImage src={authorImageUrl} alt="@shadcn" />
                   <AvatarFallback className={'rounded-lg text-[#0c4c6c] dark:text-white'}>PP</AvatarFallback>
               </Avatar>
-              <Input type="text" placeholder='Add a comment' className='rounded-lg font-mono w-full placeholder:text-[14px] pl-1' />
+              <Input type="text" placeholder='Add a comment' className='rounded-lg font-mono w-full placeholder:text-[14px] pl-1 placeholder:italic placeholder:text-slate-400' />
               <div className='self-center'>  
                   <SendHorizonal size={18} className='text-black dark:text-white' />
               </div>
