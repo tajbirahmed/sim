@@ -40,7 +40,7 @@ const SideBar = () => {
       />
       <SideBarComp
         title='Course'
-        link='/result'
+        link='/enrolled-courses'
         selected={content}
         setSelected={setContent}
       />

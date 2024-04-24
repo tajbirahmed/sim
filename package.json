@@ -18,10 +18,14 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-toast": "^1.1.5",
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 0a5b5c8 (added toaster for announcement)
 =======
     "chart.js": "^4.4.2",
 >>>>>>> 797d6f8 (solve_not_showing_semester_properly_plus_fix_merge_error)
+=======
+    "chart.js": "^4.4.2",
+>>>>>>> main
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "date-fns": "^3.6.0",
