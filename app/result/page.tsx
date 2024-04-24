@@ -3,6 +3,15 @@
 import { ResultCard } from '@/components/ResultComponents/ResultCard';
 import { SemesterContext } from '@/contexts/SemesterContexts';
 import React, { useContext } from 'react'
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 
 
 const ResultHome = () => {
@@ -12,6 +21,7 @@ const ResultHome = () => {
       <ResultCard 
           semester={semester}
       />
+      
     </div>
   )
 }
