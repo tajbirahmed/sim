@@ -2,16 +2,21 @@ import React from "react";
 import "./Dashboard.css"; // Import the CSS file
 import "@/components/BarChart";
 import BarChart from "@/components/BarChart";
+import NavigateComp from "@/components/NavigateComp";
 
-export default function Dashboard() {
+const Dashboard = () => {
   return (
-    <div className="w-full flex flex-col h-[94vh] overflow-y-auto no-scrollbar pt-6 ">
-      {/* Welcome Message */}
-      <p className="text-lg font-bold text-gray-800 ">
+    <div className="w-full flex flex-col h-[94vh] overflow-y-auto no-scrollbar pt-6 ml-5">
+      <NavigateComp
+        title="Dashboard"
+        
+        dashboard={true}
+      />
+      <p className="text-lg font-bold text-gray-800 self-center mr-96">
         Welcome, <span className="text-blue-500">John Doe!</span>
       </p>
 
-      <div className="grid grid-cols-3 gap-0 ml-20 ">
+      <div className="grid grid-cols-3 gap-0 self-center">
         {/* Semester */}
         <div className="card bg-slate-100 flex-row p-8">
           <h2 className="title">Semester</h2>
@@ -42,3 +47,5 @@ export default function Dashboard() {
     </div>
   );
 }
+
+export default Dashboard;

@@ -12,12 +12,12 @@ const Semester = () => {
   const [date, setDate] = useState<Date>()
 
   return (
-    <div className='flex flex-col ml-5  h-[94vh] overflow-y-auto w-full no-scrollbar pt-6'>
+    <div className='flex flex-col ml-5  h-[94vh] overflow-y-auto w-11/12 no-scrollbar pt-6'>
       <NavigateComp
         title="Announcements"
         make={true}
       />
-      <div className='flex flex-col space-y-5 pt-2'>
+      <div className='flex flex-col space-y-5 pt-2 w-full '>
         <div className='flex flex-row justify-between pr-1'>
           <h1 className='font-bold text-[32px] text-slate-700 hover:text-slate-600 dark:text-white'>Announcements</h1>
           <p className='font-semibold text-[16px] self-center'>{date && `${date.toLocaleDateString('en-GB', {

@@ -19,3 +19,11 @@ export const SemesterProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     </SemesterContext.Provider>
   );
 }
+
+export const useSemester = () => { 
+  const context = React.useContext(SemesterContext)
+  if (context === undefined) {
+    throw new Error('useSemester must be used within a SemesterProvider')
+  }
+  return context; 
+}
