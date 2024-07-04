@@ -32,7 +32,7 @@ export default function SettingPopOver() {
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button variant="link" className="hover:bg-slate-200 hover:rounded-xl">
+                <Button variant="link" className="hover:bg-slate-200 hover:rounded-xl dark:hover:bg-slate-800">
                     <Settings size={18} className='text-black dark:text-white pt-[2px]' />
                 </Button>
             </PopoverTrigger>

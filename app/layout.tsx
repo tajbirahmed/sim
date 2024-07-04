@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/toaster"
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { SemesterProvider } from "@/contexts/SemesterContexts";
 import { SideBarProvider } from "@/contexts/SideBarContext";
+import { ProfileImageUrlProvider } from "@/contexts/ProfileImageContext";
 
 const inter = Inter({ subsets: ["latin"] });
 // 1. font selection. 
@@ -30,11 +31,13 @@ export default function RootLayout({
                     disableTransitionOnChange
                 >
                     <SideBarProvider>
-                        <NavBar />
+                        {/* <NavBar /> */}
                         <div className="flex flex-row">
                             <SideBar />
                             <SemesterProvider>
-                                {children}
+                                <ProfileImageUrlProvider>
+                                    {children}
+                                </ProfileImageUrlProvider>
                             </SemesterProvider>
 
                         </div>

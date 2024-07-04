@@ -4,11 +4,13 @@ import React, { useContext } from 'react'
 import SettingPopOver from './SemesterComponents/SettingsDialog';
 import {  useSemester } from '@/contexts/SemesterContexts';
 import { CreateAnnouncement } from './SemesterComponents/CreateAnnouncement';
+import { ModeToggle } from './DarkModeToggle';
 
 interface NavigateProps {
   title?: string | undefined;
   make?: boolean | undefined;
   dashboard?: boolean;
+  profile?: boolean;
 }
 
 const NavigateComp = ({
@@ -24,7 +26,7 @@ const NavigateComp = ({
     setSemester
   } = useSemester(); 
   return (
-    <div className='flex flex-row space-x-1 items-center justify-between ml-4'>
+    <div className='flex flex-row space-x-1 items-center justify-between'>
       <div className='flex flex-row space-x-1 items-center' >
         <Home size={15} className="text-black dark:text-white self-center" />
         <ChevronRight size={14} className="text-black dark:text-white pt-[1px]" />
@@ -55,6 +57,7 @@ const NavigateComp = ({
       <div className="flex flex-row justify-between items-center">
         {make ? <CreateAnnouncement /> : null}
         <SettingPopOver />
+        <ModeToggle />
       </div>
     </div>
   )
