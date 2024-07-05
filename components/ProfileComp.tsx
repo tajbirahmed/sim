@@ -20,9 +20,15 @@ import Link from 'next/link';
 
 const ProfileComp = () => {
 	const [name, setName] = useState<string | undefined>(undefined);
+	const [openPopOver, setOpenPopOver] = useState<boolean>(false);
+
+	const handleClick = () => { 
+		setOpenPopOver(!openPopOver);
+	}
+
 	return (
 		
-		<div className='flex flex-row space-x-3 w-full mt-2 p-2 mb-1 bg-slate-100 rounded-md dark:bg-slate-900'>
+		<div className='flex flex-row space-x-3 w-full mt-2 p-2 mb-1 bg-slate-100 rounded-md dark:bg-slate-900' onClick={handleClick} >
 			<div className='w-10 h-10 rounded-lg'>
 				<Avatar className={'rounded-lg'}>
 					<AvatarImage src="https://ichef.bbci.co.uk/news/976/cpsprodpb/16620/production/_91408619_55df76d5-2245-41c1-8031-07a4da3f313f.jpg.webp" alt="@shadcn" />
@@ -37,9 +43,9 @@ const ProfileComp = () => {
 					Student
 				</h4>
 			</div>
-			<Popover>
+			<Popover open={openPopOver} >
 				<PopoverTrigger>
-					<User />
+					{/* <User size={24} onClick={handleClick}/> */}
 				</PopoverTrigger>
 				<PopoverContent className='border-0 shadow-transparent dark:bg-transparent'>
 					<Card>
@@ -47,11 +53,11 @@ const ProfileComp = () => {
 							<CardTitle>Manage Profile</CardTitle>
 						</CardHeader>
 						<CardContent>
-							<Link href='/viewprofile' className='flex flex-row space-x-6 hover:bg-slate-200 h-12 items-center p-2 rounded-md dark:hover:bg-slate-800' >
+							<Link href='/viewprofile' onClick={handleClick} className='flex flex-row space-x-6 hover:bg-slate-200 h-12 items-center p-2 rounded-md dark:hover:bg-slate-800' >
 								<SquareUser size={28} />
 								<p className='font-semibold'>View Profile</p>
 							</Link>
-							<Link href='/editprofile' className='flex flex-row space-x-6 hover:bg-slate-200 h-12 items-center p-2 rounded-md dark:hover:bg-slate-800'>
+							<Link href='/editprofile' onClick={handleClick}  className='flex flex-row space-x-6 hover:bg-slate-200 h-12 items-center p-2 rounded-md dark:hover:bg-slate-800'>
 								<Bolt size={28} />
 								<p className='font-semibold'>Edit Profile</p>
 							</Link>

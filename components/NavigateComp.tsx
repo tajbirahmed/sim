@@ -16,7 +16,8 @@ interface NavigateProps {
 const NavigateComp = ({
   title,
   make, 
-  dashboard
+  dashboard, 
+  profile
 }: NavigateProps) => {
   const helper = (str: string): string => {
     return str.charAt(0).toUpperCase() + (str.length > 1 ? str.slice(1).toLowerCase() : '');
@@ -56,7 +57,7 @@ const NavigateComp = ({
       </div>
       <div className="flex flex-row justify-between items-center">
         {make ? <CreateAnnouncement /> : null}
-        <SettingPopOver />
+        {profile === undefined ? <SettingPopOver /> : null}
         <ModeToggle />
       </div>
     </div>

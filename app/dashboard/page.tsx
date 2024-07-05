@@ -9,7 +9,7 @@ const Dashboard = () => {
     <div className="w-full flex flex-col h-[94vh] overflow-y-auto no-scrollbar pt-6 ml-5">
       <NavigateComp
         title="Dashboard"
-        
+        profile={true}
         dashboard={true}
       />
       <p className="text-lg font-bold text-gray-800 self-center mr-96">

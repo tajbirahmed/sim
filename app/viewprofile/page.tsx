@@ -8,7 +8,7 @@ import { Student } from '@/types/StundentType';
 import { ChevronDown, ChevronRight, ChevronUp, Edit2, Mail, Phone, SquarePen } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AddressType } from '@/types/AddressType';
 import {
     Select,
@@ -19,7 +19,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { Address } from 'cluster';
+import { useSession } from '@/contexts/SessionContext';
 
 
 const ViewProfile = () => {
@@ -28,6 +28,11 @@ const ViewProfile = () => {
         profileImageUrl,
         setProfileImageUrl
     } = useProfileImage();
+
+    const {
+        session,
+        setSession
+    } = useSession(); 
 
     const handleEditProfile = () => {
 
@@ -63,11 +68,46 @@ const ViewProfile = () => {
         setShowDetails(!showdetails);
     }
 
+    // function to get specific student from /students/:id endpoint
+    const getStudent = async () => { 
+        const studentUrl = 'http://bike-csecu.com:5000/api/student/20701012'
+        try {
+            if (session) { 
+                const response = await fetch(
+                    studentUrl,
+                    {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': 'Bearer ' + session.session_id,
+                        }
+                    }
+
+                )
+                const result = await response.json();
+                console.log(result);
+                
+            } else {
+                console.log('Session is not set');
+            }
+        } catch (error) {
+            console.log("[viewprofile/page.tsx] There was a problem with your fetch operation:", error);
+            
+        }
+    }
+
+    
+    useEffect(() => { 
+        if (session) {
+            setSession(session);
+            getStudent();
+        }
+    }, [session])
     return (
         <div className='flex flex-col ml-5  h-[94vh] overflow-y-auto w-11/12 no-scrollbar pt-6'>
             <NavigateComp
                 title="Profile"
                 dashboard={true}
+                profile={true}
             />
             {/* <p className='font-bold text-4xl self-center'> Your Information</p> */}
             {student && address
@@ -94,9 +134,9 @@ const ViewProfile = () => {
                                             <div className='flex flex-col space-y-1'>
                                                 <p className='font-bold text-2xl mt-1'>{"Student Name"}</p>
                                                 <p className='italic text-sm '>{"Student"}</p>
-                                                <p className='text-sm '>{"Department Name"}</p>
                                                 <p className='text-sm '>{"Semester"}</p>
                                                 <p className='text-sm '>{"Session"}</p>
+                                                <p className='text-sm '>{"Department Name"}</p>
                                                 <Link prefetch={false} href={"www.google.com"} className='flex flex-row space-x-3 items-center'>
                                                         <Mail size={24} />
                                                     <p className='text-blue-900 dark:text-blue-500 text-sm'>{"Email"}</p>

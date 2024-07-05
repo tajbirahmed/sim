@@ -8,7 +8,7 @@ const Page = () => {
     <div className='flex flex-col ml-5  h-[94vh] overflow-y-auto w-full no-scrollbar pt-6'>
       <NavigateComp
         title="Courses"
-        make={true}
+        // make={true}
       />
     <div className="p-4 mb-64 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {NavData.map((course, index) => (

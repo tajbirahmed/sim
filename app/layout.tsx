@@ -9,6 +9,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { SemesterProvider } from "@/contexts/SemesterContexts";
 import { SideBarProvider } from "@/contexts/SideBarContext";
 import { ProfileImageUrlProvider } from "@/contexts/ProfileImageContext";
+import { SessionProvider } from "@/contexts/SessionContext";
 
 const inter = Inter({ subsets: ["latin"] });
 // 1. font selection. 
@@ -30,6 +31,7 @@ export default function RootLayout({
                     enableSystem
                     disableTransitionOnChange
                 >
+                    <SessionProvider>
                     <SideBarProvider>
                         {/* <NavBar /> */}
                         <div className="flex flex-row">
@@ -41,7 +43,8 @@ export default function RootLayout({
                             </SemesterProvider>
 
                         </div>
-                    </SideBarProvider>
+                        </SideBarProvider>
+                    </SessionProvider>
                     {/* <div className="flex-end">
                     <FooterBar />
                 </div> */}
