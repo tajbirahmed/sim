@@ -10,7 +10,6 @@ const ResultHome = () => {
   return (
     <div className="flex flex-row justify-center w-full pt-2">
       <ResultCard 
-          semester={semester}
       />
     </div>
   )

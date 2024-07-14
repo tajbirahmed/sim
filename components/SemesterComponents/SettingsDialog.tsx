@@ -1,3 +1,5 @@
+"use client"; 
+
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -23,12 +25,56 @@ import {
 } from "@/components/ui/select"
 import { Settings } from "lucide-react"
 import { semesterData } from "./_semesterWithValue"
-import { useContext } from "react"
-import { SemesterContext } from "@/contexts/SemesterContexts"
+import { useContext, useEffect, useState } from "react"
+import { SemesterContext, useSemester } from "@/contexts/SemesterContexts"
+import { useSession } from "@/contexts/SessionContext";
+
+type StudentProgram = {
+    academic_session_id: number;
+    session: string;
+    semester: number;
+    program_id: number;
+    program_name: string;
+    program_abbr: string;
+    student_program_id: number;
+    student_program_start_date: string;
+    student_program_end_date: string;
+    student_program_type: string;
+};
+
 
 export default function SettingPopOver() { 
-    const { semester, setSemester } = useContext(SemesterContext)!
-    
+    const {
+        semester,
+        setSemester
+    } = useSemester(); 
+
+    const {
+        student
+    } = useSession();
+
+    const [semesters, setSemesters] = useState<StudentProgram[]>([])
+
+    const baseUrl = process.env.NEXT_PUBLIC_BASEURL!;
+
+    // needs checking
+    const getSemester = async () => {
+        if (student) {
+            const academic_session_id = student.academic_session_id
+            const historyUrl = `${baseUrl}/api/student-info/history?academic_session_id=${academic_session_id}`;
+            const response = await fetch(historyUrl);
+            const data = await response.json();
+            setSemesters(data as StudentProgram[]);
+            console.log(data); 
+        } else { 
+            console.log("[SettingDialog.tsx] Student not found");
+        }
+    }
+
+    useEffect(() => {
+        getSemester();
+    }, [student])
+
     return (
         <Popover>
             <PopoverTrigger asChild>
@@ -51,8 +97,8 @@ export default function SettingPopOver() {
                                 <SelectValue placeholder="Select semester"/>
                             </SelectTrigger>
                             <SelectContent position="popper">
-                                {semesterData.map((val, ind) => (
-                                    <SelectItem key={ ind } value={val.value.toString()}>{ val.semester} </SelectItem>
+                                {semesters.map((val, ind) => (
+                                    <SelectItem key={ ind } value={val.semester.toString()}>{ val.semester} </SelectItem>
                                 ))}                                
                             </SelectContent>
                         </Select>

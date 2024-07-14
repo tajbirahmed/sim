@@ -1,16 +1,44 @@
-export type Student = {
-    student_id: number, 
-    user_id: string, 
-    hall_id: number, 
-    department_id: number,
-    program_id: number,
-    fathers_name_bn: string,
-    mothers_name_bn: string,
-    fathers_name: string,
-    mothers_name: string,
-    guardians_name: string,
-    guardian_address_id: number,
-    guardian_name_bn: string,
-    guardian_relation: 'Father' | 'Mother' | 'Other',
-    academic_session_id : number
+export interface Student {
+    session_id: string;
+    user_id: string;
+    created_at: string;
+    profile_image_id: number;
+    sign_id: number;
+    permanent_address_id: number;
+    email: string;
+    phone: string;
+    first_name_bn: string;
+    last_name_bn: string;
+    first_name: string;
+    last_name: string;
+    dob: Date;
+    gender: string;
+    blood_group: string;
+    religion: string;
+    ethnicity: string;
+    nationality: string;
+    password: string;
+    present_address_id: number;
+    student_id: number;
+    hall_id: number;
+    department_id: number;
+    program_id: number;
+    fathers_name_bn: string;
+    mothers_name_bn: string;
+    fathers_name: string;
+    mothers_name: string;
+    guardian_name: string;
+    guardian_address_id: number;
+    guardian_name_bn: string;
+    guardian_relation: string;
+    academic_session_id: number;
+    hall_name: string;
+    department_name: string;
+    university_id: number;
+    faculty: string;
+    undergrad_semester_no: number;
+    grad_semester_no: number;
+    department_abbr: string;
+    university_name: string; 
+    university_abbr: string; 
 }

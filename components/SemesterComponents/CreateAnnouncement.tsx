@@ -13,12 +13,13 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { SemesterContext } from "@/contexts/SemesterContexts"
 import { SemesterHelper } from "@/utils/SemesterHelper";
-import { Plus, PlusIcon } from "lucide-react"
+import { Plus, PlusIcon, X } from "lucide-react"
 import { useContext, useEffect, useState } from "react"
 import { Textarea } from "../ui/textarea";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { ToastAction } from "@/components/ui/toast"
 import { useToast } from "@/components/ui/use-toast"
+import { format } from "date-fns";
 
 export function CreateAnnouncement() {
     const { semester } = useContext(SemesterContext)!;
@@ -32,6 +33,39 @@ export function CreateAnnouncement() {
         return text.substring(0, 12) + '...';
     }
     const { toast } = useToast();
+    
+    const getData = async () => { 
+        const date = format('2024-07-06', 'yyyy-MM-dd HH:mm:ss');
+        console.log(date);
+        
+        const announcement = {
+            academic_session_id: 20180301,
+            announcement: "Testing announcement using post 2",
+            date: date,
+            student_id: 19701037
+        }
+        const result = await fetch(
+            `http://localhost:5000/api/student-info/announcement`, 
+            {
+                method: 'POST', 
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(announcement),
+            }
+        )
+        const response = await result.json();
+        console.log(response)
+        
+    }
+    useEffect(() => { 
+        const formData = new FormData();
+        files.forEach((file) => {
+            formData.append('file', file)
+        })
+        getData()
+    }, [])
+
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -71,8 +105,13 @@ export function CreateAnnouncement() {
                             multiple
                             onChange={(e) => { 
                                 if (e.target.files) {
-                                    const file = Array.from(e.target.files)
-                                    setFiles(file)
+                                    const file = Array.from(e.target.files); 
+                                    if (file.length <= 8) {
+
+                                        setFiles((prev) => [...prev, ...file]);
+                                    } else {
+
+                                    }
                                 }    
                             }}
                         />
@@ -83,6 +122,12 @@ export function CreateAnnouncement() {
                             <div className="flex flex-row w-80 gap-x-8 justify-between">
                                     <p className="font-medium text-black dark:text-white overflow-hidden">{limitString(val.name)}</p>
                                     <p className="font-medium text-black dark:text-white">{val.size}bytes</p>
+                                    <button>
+                                        <X size={20} className="text-black dark:text-white" onClick={() => {
+                                            const newFiles = files.filter((_, index) => index !== ind)
+                                            setFiles(newFiles)
+                                        }} />
+                                    </button>
                             </div>
                         ))
                         ) : (null)}

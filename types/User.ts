@@ -9,7 +9,7 @@ export type User = {
     last_name_bn?: string; // varchar(250), nullable
     first_name: string; // varchar(250)
     last_name: string; // varchar(250)
-    dob: string; // date
+    dob: Date; // date
     gender?: string; // varchar(64), nullable
     blood_group?: string; // varchar(4), nullable
     religion?: string; // varchar(128), nullable
