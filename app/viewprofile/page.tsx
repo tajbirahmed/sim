@@ -5,21 +5,22 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useProfileImage } from '@/contexts/ProfileImageContext'
 import { Student } from '@/types/StundentType';
-import { Mail, Phone, SquarePen } from 'lucide-react';
+import { User } from '@/types/User';
+import { ChevronDown, ChevronRight, ChevronUp, Edit2, Mail, Phone, SquarePen } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
-import { Address, AddressType } from '@/types/AddressType';
+import { AddressType } from '@/types/AddressType';
 import {
     Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
 import { useSession } from '@/contexts/SessionContext';
-import { User } from '@/types/User';
-// import { useSession } from '@/contexts/SessionContext';
-
-
 
 
 const ViewProfile = () => {
@@ -37,12 +38,54 @@ const ViewProfile = () => {
     const handleEditProfile = () => {
 
     }
-
-
-    const [student, setStudent] = useState<Student & User| undefined>(undefined);
+    const obj: Student = {
+        student_id: 20701016,
+        user_id: '7fdf2017-asdfa#!1-6asda0-010ed',
+        hall_id: 1,
+        department_id: 1,
+        program_id: 1,
+        fathers_name_bn: 'জন ডো',
+        mothers_name_bn: 'জেন ডো',
+        fathers_name: 'John Doe',
+        mothers_name: 'Jane Doe',
+        guardians_name: 'Jane Doe',
+        guardian_address_id: 1,
+        guardian_name_bn: 'জন ডো',
+        guardian_relation: 'Mother',
+        academic_session_id: 207101019
+    }
+    const userObj: User = {
+        user_id: '123e4567-e89b-12d3-a456-426614174000',
+        profile_image_id: 1,
+        sign_id: 2,
+        permanent_address_id: 101,
+        email: 'john.doe@example.com',
+        phone: '+8801234567890',
+        first_name_bn: 'জন',
+        last_name_bn: 'ডো',
+        first_name: 'John',
+        last_name: 'Doe',
+        dob: '1990-01-01',
+        gender: 'Male',
+        blood_group: 'O+',
+        religion: 'Christianity',
+        ethnicity: 'Caucasian',
+        nationality: 'Bangladeshi',
+        password: 'securepassword123',
+        present_address_id: 102
+    }
+    const addressObj: AddressType = {
+        address_id: 1,
+        country: 'Bangladesh',
+        division: 'Chattogram',
+        district: 'Chattogram',
+        upazila: 'Hathazari'
+    }
+    const [student, setstudent] = useState<Student | undefined>(obj);
+    const [user, setuser] = useState<User>(userObj); // undefined kora lagbe
     const [showdetails, setShowDetails] = useState<boolean>(true);
-    const [address, setAddress] = useState<Address | undefined>(undefined)
-    const [option, setOption] = useState<'personal' | 'location' | 'contact' >('personal');
+    const [address, setAddress] = useState<AddressType | undefined>(addressObj)
+    const [option, setOption] = useState<'personal' | 'location'| 'contact' >('personal');
     const handleDetailClick = () => {
         setShowDetails(!showdetails);
     }
@@ -63,8 +106,7 @@ const ViewProfile = () => {
 
                 )
                 const result = await response.json();
-                setStudent(result as Student & User)
-                // console.log(result);
+                console.log(result);
                 
             } else {
                 console.log('Session is not set');
@@ -75,23 +117,13 @@ const ViewProfile = () => {
         }
     }
 
-    const getAddress = async () => { 
-        if (student) { 
-
-        }
-    }
-
     
     useEffect(() => { 
         if (session) {
             setSession(session);
-        }  
-        if (!student) {
             getStudent();
         }
-        console.log(student);
-        
-    }, [session, student])
+    }, [session])
     return (
         <div className='flex flex-col ml-5  h-[94vh] overflow-y-auto w-11/12 no-scrollbar pt-6'>
             <NavigateComp
@@ -100,10 +132,7 @@ const ViewProfile = () => {
                 profile={true}
             />
             {/* <p className='font-bold text-4xl self-center'> Your Information</p> */}
-
-            
-
-            {student
+            {student && address
                 ?
                 (
                     <div className='flex flex-col w-full h-full items-stretch'>
@@ -148,7 +177,7 @@ const ViewProfile = () => {
                             <Button variant="default" onClick={handleEditProfile}>
                                 <div className='flex flex-row items-center space-x-2'>
                                     <SquarePen size={24} />
-                                    <p className=''>Edit Information</p>
+                                    <p>Edit Information</p>
                                 </div>
                             </Button>
 
@@ -159,16 +188,17 @@ const ViewProfile = () => {
                                     Personal Information
                                 </p>
                             </button>
-                            <button className='flex flex-row justify-between self-center items-center mt-16 border-white w-8/12 ml-36' onClick={() => { setOption('contact') }}>
-                                <p className={`text-xl ${option === 'contact' ? 'font-bold border-b-2' : 'font-normal'}`}>
-                                    Contact Info
-                                </p>
-                            </button>
                             <button className='flex flex-row justify-between self-center items-center mt-16 border-white w-8/12 ml-36' onClick={() => { setOption('location') }}>
                                 <p className={`text-xl ${option === 'location' ? 'font-bold border-b-2' : 'font-normal'}`}>
                                     Location
                                 </p>
                             </button>
+                            <button className='flex flex-row justify-between self-center items-center mt-16 border-white w-8/12 ml-36' onClick={() => { setOption('contact') }}>
+                                <p className={`text-xl ${option === 'contact' ? 'font-bold border-b-2' : 'font-normal'}`}>
+                                    Contact Info
+                                </p>
+                            </button>
+                            
                         </div>
                         {
                             option === 'personal'
@@ -180,52 +210,52 @@ const ViewProfile = () => {
                                     </div> */}
                                     <div className='grid grid-cols-2 grid-flow-row gap-y-8 gap-x-2 ml-48 mt-10'>
 
-                                        <div className='flex flex-col space-y-2 max-w-80'>
+                                        <div className='flex flex-col space-y-2 w-80'>
                                             <Label>Student ID</Label>
                                             <Input type='text' readOnly value={student.student_id} />
                                         </div>
 
-                                        <div className='flex flex-col space-y-2 max-w-80'>
+                                        <div className='flex flex-col space-y-2 w-80'>
                                             <Label>Student Full Name(English)</Label>
                                             <Input type='text' readOnly value='**Name**' />
                                         </div>
 
-                                        <div className='flex flex-col space-y-2 max-w-80'>
+                                        <div className='flex flex-col space-y-2 w-80'>
                                             <Label>Student Name(Bangla)</Label>
-                                            <Input type='text' readOnly value={student?.first_name_bn} />
+                                            <Input type='text' readOnly value='**নাম**' />
                                         </div>
 
-                                        <div className='flex flex-col space-y-2 max-w-80'>
+                                        <div className='flex flex-col space-y-2 w-80'>
                                             <Label>Student Father's Name(English)</Label>
                                             <Input type='text' readOnly value={student.fathers_name} />
                                         </div>
 
-                                        <div className='flex flex-col space-y-2  max-w-80'>
+                                        <div className='flex flex-col space-y-2 w-80'>
                                             <Label>Student Father's Name(Bangla)</Label>
                                             <Input type='text' readOnly value={student.fathers_name_bn} />
                                         </div>
 
-                                        <div className='flex flex-col space-y-2 max-w-80'>
+                                        <div className='flex flex-col space-y-2 w-80'>
                                             <Label>Student Mother's Name(English)</Label>
                                             <Input type='text' readOnly value={student.mothers_name} />
                                         </div>
 
-                                        <div className='flex flex-col space-y-2  max-w-80'>
+                                        <div className='flex flex-col space-y-2 w-80'>
                                             <Label>Student Mother's Name(Bangla)</Label>
                                             <Input type='text' readOnly value={student.mothers_name_bn} />
                                         </div>
 
-                                        <div className='flex flex-col space-y-2  max-w-80'>
+                                        <div className='flex flex-col space-y-2 w-80'>
                                             <Label>Student Guardian's Name(English)</Label>
                                             <Input type='text' readOnly value={student.guardians_name} />
                                         </div>
 
-                                        <div className='flex flex-col space-y-2  max-w-80'>
+                                        <div className='flex flex-col space-y-2 w-80'>
                                             <Label>Student Guardian's Name(Bangla)</Label>
                                             <Input type='text' readOnly value={student.guardian_name_bn} />
                                         </div>
 
-                                        <div className='flex flex-col space-y-2  max-w-80'>
+                                        <div className='flex flex-col space-y-2 w-80'>
                                             <Label>Student-Guardian Relation</Label>
                                             <Select>
                                                 <SelectTrigger>
@@ -234,39 +264,128 @@ const ViewProfile = () => {
                                             </Select>
                                         </div>
 
+                                        
+                                        <div className='flex flex-col space-y-2 w-80'>
+                                            <Label>Date of Birth</Label>
+                                            <Input type='text' readOnly value={user.dob} />
+                                        </div>
+
+                                        <div className='flex flex-col space-y-2 w-80'>
+                                            <Label>Gender</Label>
+                                            <Input type='text' readOnly value={user.gender} />
+                                        </div>
+
+                                        <div className='flex flex-col space-y-2 w-80'>
+                                            <Label>Blood Group</Label>
+                                            <Input type='text' readOnly value={user.blood_group} />
+                                        </div>
+
+                                        <div className='flex flex-col space-y-2 w-80'>
+                                            <Label>Religion</Label>
+                                            <Input type='text' readOnly value={user.religion} />
+                                        </div>
+
+                                        <div className='flex flex-col space-y-2 w-80'>
+                                            <Label>Ethnicity</Label>
+                                            <Input type='text' readOnly value={user.ethnicity} />
+                                        </div>
+
+                                        <div className='flex flex-col space-y-2 w-80'>
+                                            <Label>Nationality</Label>
+                                            <Input type='text' readOnly value={user.nationality} />
+                                        </div>
+
                                     </div>
                                 </div>
                                 :
                                 option === 'location'
                                     ?
                                     (
-                                        // <div className='grid grid-cols-2 grid-flow-row gap-y-8 gap-x-2 ml-48 mt-10'>
-                                        //     <div className='flex flex-col space-y-2 w-80'>
-                                        //         <Label>Upazilla</Label>
-                                        //         <Input type='text' readOnly value={address.upazila} />
-                                        //     </div>
-                                        //     <div className='flex flex-col space-y-2 w-80'>
-                                        //         <Label>District</Label>
-                                        //         <Input type='text' readOnly value={address.district} />
-                                        //     </div>
-                                        //     <div className='flex flex-col space-y-2 w-80'>
-                                        //         <Label>Division</Label>
-                                        //         <Input type='text' readOnly value={address.division} />
-                                        //     </div>
-                                        //     <div className='flex flex-col space-y-2 w-80'>
-                                        //         <Label>Country</Label>
-                                        //         <Input type='text' readOnly value={address.country} />
-                                        //     </div>
-                                        // </div>
-                                    null
+                                        <div className='grid grid-cols-2 grid-flow-row gap-y-8 gap-x-2 ml-48 mt-10'>
+                                            <div className='col-span-2'>
+                                                <h2 className='text-2xl font-bold'>Present Address</h2>
+                                            </div>
+                                            <div className='flex flex-col space-y-2 w-80'>
+                                                <Label>Upazilla</Label>
+                                                <Input type='text' readOnly value={address.upazila} />
+                                            </div>
+                                            <div className='flex flex-col space-y-2 w-80'>
+                                                <Label>District</Label>
+                                                <Input type='text' readOnly value={address.district} />
+                                            </div>
+                                            <div className='flex flex-col space-y-2 w-80'>
+                                                <Label>Division</Label>
+                                                <Input type='text' readOnly value={address.division} />
+                                            </div>
+                                            <div className='flex flex-col space-y-2 w-80'>
+                                                <Label>Country</Label>
+                                                <Input type='text' readOnly value={address.country} />
+                                            </div>
+                                            
+                                            <div className='col-span-2'>
+                                                <h2 className='text-2xl font-bold'>Permanent Address</h2>
+                                            </div>
+                                            <div className='flex flex-col space-y-2 w-80'>
+                                                <Label>Upazilla</Label>
+                                                <Input type='text' readOnly value={address.upazila} />
+                                            </div>
+                                            <div className='flex flex-col space-y-2 w-80'>
+                                                <Label>District</Label>
+                                                <Input type='text' readOnly value={address.district} />
+                                            </div>
+                                            <div className='flex flex-col space-y-2 w-80'>
+                                                <Label>Division</Label>
+                                                <Input type='text' readOnly value={address.division} />
+                                            </div>
+                                            <div className='flex flex-col space-y-2 w-80'>
+                                                <Label>Country</Label>
+                                                <Input type='text' readOnly value={address.country} />
+                                            </div>
+
+                                            <div className='col-span-2'>
+                                                <h2 className='text-2xl font-bold'>Guardian Address</h2>
+                                            </div>
+                                            <div className='flex flex-col space-y-2 w-80'>
+                                                <Label>Upazilla</Label>
+                                                <Input type='text' readOnly value={address.upazila} />
+                                            </div>
+                                            <div className='flex flex-col space-y-2 w-80'>
+                                                <Label>District</Label>
+                                                <Input type='text' readOnly value={address.district} />
+                                            </div>
+                                            <div className='flex flex-col space-y-2 w-80'>
+                                                <Label>Division</Label>
+                                                <Input type='text' readOnly value={address.division} />
+                                            </div>
+                                            <div className='flex flex-col space-y-2 w-80'>
+                                                <Label>Country</Label>
+                                                <Input type='text' readOnly value={address.country} />
+                                            </div>
+                                        </div>
+                                        
                                     )
-                                    : option === 'contact' ? 
+                                    :
+                                    option === 'contact'
+                                    ?
+                                    (
+                                        <div className='grid grid-cols-2 grid-flow-row gap-y-8 gap-x-2 ml-48 mt-10'>
+                                            <div className='flex flex-col space-y-2 w-80'>
+                                                <Label>Email</Label>
+                                                <Input type='text' readOnly value={user.email} />
+                                            </div>
+
+                                            <div className='flex flex-col space-y-2 w-80'>
+                                                <Label>Phone</Label>
+                                                <Input type='text' readOnly value={user.phone} />
+                                            </div>
+
+                                        </div>
+                                    )
+                                    :
+                                    
                                     (
                                         null   
-                                        )
-                                        : (
-                                            null
-                                        )
+                                    )
                         }
                     </div>
                 )
