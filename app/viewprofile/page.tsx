@@ -31,67 +31,56 @@ const ViewProfile = () => {
 
     const {
         session,
-        setSession
+        setSession, 
+        student
     } = useSession(); 
 
     const handleEditProfile = () => {
 
     }
 
-
-    const [student, setStudent] = useState<Student & User| undefined>(undefined);
-    const [showdetails, setShowDetails] = useState<boolean>(true);
-    const [address, setAddress] = useState<Address | undefined>(undefined)
+    const [cruuAddress, setCurrAddress] = useState<Address | undefined>(undefined)
     const [option, setOption] = useState<'personal' | 'location' | 'contact' >('personal');
-    const handleDetailClick = () => {
-        setShowDetails(!showdetails);
-    }
-
-    // function to get specific student from /students/:id endpoint
-    const getStudent = async () => { 
-        const studentUrl = 'http://bike-csecu.com:5000/api/student/20701012'
-        try {
-            if (session) { 
+    
+    const getAddressById = async (id : number) => { 
+        const baseUrl = process.env.NEXT_PUBLIC_BASEURL!;
+        if (student) {
+            const addressUrl = `${baseUrl}/api/address/${id}`;
+            try {
                 const response = await fetch(
-                    studentUrl,
+                    addressUrl,
                     {
                         method: 'GET',
                         headers: {
-                            'Authorization': 'Bearer ' + session.session_id,
-                        }
+                            'Content-Type': 'application/json'
+                        },
+                        cache: 'force-cache'
                     }
-
-                )
+                );
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
                 const result = await response.json();
-                setStudent(result as Student & User)
-                // console.log(result);
                 
-            } else {
-                console.log('Session is not set');
+                return result as Address;
+            } catch (error) {
+                console.error('[app/viewprofile/page.tsx] There was a problem with your fetch operation:', error);
             }
-        } catch (error) {
-            console.log("[viewprofile/page.tsx] There was a problem with your fetch operation:", error);
-            
+        } else {
+            console.error('[app/viewprofile/page.tsx] Student is undefined');
         }
+        return undefined
     }
 
     const getAddress = async () => { 
-        if (student) { 
-
+        if (student) {
+            const address = await getAddressById(student.present_address_id);
+            setCurrAddress(address)
         }
+            
     }
 
     
-    useEffect(() => { 
-        if (session) {
-            setSession(session);
-        }  
-        if (!student) {
-            getStudent();
-        }
-        console.log(student);
-        
-    }, [session, student])
     return (
         <div className='flex flex-col ml-5  h-[94vh] overflow-y-auto w-11/12 no-scrollbar pt-6'>
             <NavigateComp
@@ -217,7 +206,7 @@ const ViewProfile = () => {
 
                                         <div className='flex flex-col space-y-2  max-w-80'>
                                             <Label>Student Guardian's Name(English)</Label>
-                                            <Input type='text' readOnly value={student.guardians_name} />
+                                            <Input type='text' readOnly value={student.guardian_name} />
                                         </div>
 
                                         <div className='flex flex-col space-y-2  max-w-80'>

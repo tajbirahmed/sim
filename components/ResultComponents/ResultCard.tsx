@@ -77,7 +77,8 @@ export function ResultCard() {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json'
-                    }
+                    },
+                    cache: 'force-cache'
                 });
                 if (!response.ok) {
                     throw new Error('Network response was not ok');

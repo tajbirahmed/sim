@@ -62,7 +62,11 @@ export default function SettingPopOver() {
         if (student) {
             const academic_session_id = student.academic_session_id
             const historyUrl = `${baseUrl}/api/student-info/history?academic_session_id=${academic_session_id}`;
-            const response = await fetch(historyUrl);
+            const response = await fetch(
+                historyUrl, {
+                method: 'GET',
+                cache: 'force-cache'
+            });
             const data = await response.json();
             setSemesters(data as StudentProgram[]);
             console.log(data); 

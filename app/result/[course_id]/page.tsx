@@ -69,6 +69,7 @@ const CourseResultDetails = () => {
             try {
                 const res = await fetch(catmUrl, {
                     method: 'GET',
+                    cache: 'force-cache'
                 });
                 const resutl = await res.json();
                 // console.log(resutl);

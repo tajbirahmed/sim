@@ -15,7 +15,7 @@ import { SelectSingleEventHandler } from "react-day-picker";
 
 interface CalendarProps {
   date: Date | undefined,
-  setDate: SelectSingleEventHandler,
+  setDate: (date : Date | undefined) => void,
 }
 
 export function CalendarComp({ date, setDate} : CalendarProps) {

@@ -9,10 +9,10 @@ import NavigateComp from '@/components/NavigateComp';
 
 
 const Semester = () => {
-  const [date, setDate] = useState<Date>()
+  const [date, setDate] = useState<Date | undefined>(undefined)
 
   return (
-    <div className='flex flex-col ml-5  h-[94vh] overflow-y-auto w-11/12 no-scrollbar pt-6'>
+    <div className='flex flex-col ml-10 h-[94vh] overflow-y-auto w-11/12 no-scrollbar pt-6'>
       <NavigateComp
         title="Announcements"
         make={true}
