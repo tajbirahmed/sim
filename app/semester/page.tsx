@@ -25,10 +25,10 @@ const Semester = () => {
 					})}`}
 					</p>
 					<div className='flex flex-row items-center justify-center w-36'>
-						<CalendarComp
+						{/* <CalendarComp
 							date={date}
 							setDate={setDate}
-						/>
+						/> */}
 					</div>
 				</div>
 				<div className='flex flex-row space-x-6 w-full'>

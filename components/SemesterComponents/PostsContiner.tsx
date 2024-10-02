@@ -1,7 +1,7 @@
 import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { StudentPost, Comment } from './_DummyReminder';
-import { MoreVertical, SendHorizonal } from 'lucide-react';
+import { StudentPost} from './_DummyReminder';
+import { Download, MoreVertical, SendHorizonal } from 'lucide-react';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -9,6 +9,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from '../ui/input';
+import { Button } from '../ui/button';
 
 const PostsContiner = ({ 
     postId,
@@ -17,13 +18,24 @@ const PostsContiner = ({
     authorImageUrl,
     postDate,
     files, 
-    comment
 } : StudentPost) => {
+    const openFileInNewTab = (base64File: string) => {
+        const newTab = window.open();
+        if (newTab) {
+            const fileType = base64File.split(';')[0].split(':')[1];
+            if (fileType.startsWith('image/')) {
+                newTab.document.body.innerHTML = `<img src="${base64File}" alt="Image" style="max-width: 100%; height: auto;"/>`;
+            } else if (fileType === 'application/pdf') {
+                newTab.document.body.innerHTML = `<iframe src="${base64File}" style="width: 100%; height: 100vh;" frameborder="0"></iframe>`;
+            } else {
+                newTab.document.body.innerHTML = `<a href="${base64File}" download>Download File</a>`;
+            }
+        }
+    };
   return (
       <div className="flex flex-col space-y-2 px-5 py-3 border-[0.2px] border-black dark:border-white rounded-md
-        shadow-sm shadow-black dark:shadow-white
+        shadow-sm shadow-black dark:shadow-white w-11/12 self-center
     ">
-        {/* post author */}
         <div className="flex flex-row justify-between">
             <div className="flex flex-row space-x-3">
                 <Avatar className={'rounded-full h-8 w-8'}>
@@ -62,19 +74,24 @@ const PostsContiner = ({
               { postContent}
         </p>
           
-        {/* files component */}
+        
         {/* comment component */}
         <hr className="w-full" />
-        <div className='flex flex-row space-x-3 pt-3'>
-              <Avatar className={'rounded-full h-8 w-8'}>
-                  <AvatarImage src={authorImageUrl} alt="@shadcn" />
-                  <AvatarFallback className={'rounded-lg text-[#0c4c6c] dark:text-white'}>PP</AvatarFallback>
-              </Avatar>
-              <Input type="text" placeholder='Add a comment' className='rounded-lg font-mono w-full placeholder:text-[14px] pl-1 placeholder:italic placeholder:text-slate-400' />
-              <div className='self-center'>  
-                  <SendHorizonal size={18} className='text-black dark:text-white' />
-              </div>
-        </div>  
+        <h1 className='text-black text-base font-medium'>Files: </h1>
+        <div className='flex flex-col gap-2 w-full h-20 overflow-scroll'>
+            {files?.map((fileName, ind) => (
+                <div key={ind} className="flex flex-row w-full gap-x-8 justify-between">
+                    <p className="font-medium text-black dark:text-white overflow-hidden">File: {ind}</p>
+                    <Button
+                        variant={"link"}
+                        onClick={() => openFileInNewTab(fileName)}
+                    >
+                        <Download size={20} className="text-black dark:text-white" />
+                    </Button>
+                </div>
+            ))}
+        </div>
+        
     </div>
   )
 }

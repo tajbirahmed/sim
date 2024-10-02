@@ -4,18 +4,10 @@ export interface StudentPost {
     postContent: string,
     authorImageUrl?: string, 
     postDate: Date,
-    files?: string, 
-    comment?: Comment[]
+    files?: string[], 
 }
 
-export interface Comment { 
-    commentId: number, 
-    postId: number, 
-    author: string,
-    authorImageUrl?: string, 
-    comment: string,
-    date: Date
-}
+
 
 export const examplePosts: StudentPost[] = [
     {
@@ -24,24 +16,6 @@ export const examplePosts: StudentPost[] = [
         postContent: "Post reagarding Project Submission of Web Lab Engineering",
         authorImageUrl: '', 
         postDate: new Date(), 
-        comment: [
-            {
-                commentId: 1,
-                postId: 1, 
-                author: 'Labib Taher Chowdhury', 
-                authorImageUrl: '', 
-                comment: 'This posst was helpful', 
-                date: new Date()
-            }, 
-            {
-                commentId: 2,
-                postId: 1,
-                author: 'Labib Taher Chowdhury',
-                authorImageUrl: '',
-                comment: 'This posst was helpful',
-                date: new Date()
-            }
-        ]
     }, 
     {
         postId: 2,
@@ -49,23 +23,5 @@ export const examplePosts: StudentPost[] = [
         postContent: "Post reagarding Telecommunication CT",
         authorImageUrl: '',
         postDate: new Date(),
-        comment: [
-            {
-                commentId: 3,
-                postId: 2,
-                author: 'Labib Taher Chowdhury',
-                authorImageUrl: '',
-                comment: 'This posst was helpful',
-                date: new Date()
-            },
-            {
-                commentId: 4,
-                postId: 2,
-                author: 'Labib Taher Chowdhury',
-                authorImageUrl: '',
-                comment: 'This posst was helpful',
-                date: new Date()
-            }
-        ]
     }
 ]

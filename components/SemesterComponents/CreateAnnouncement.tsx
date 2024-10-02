@@ -19,60 +19,101 @@ import { DialogClose } from "@radix-ui/react-dialog";
 import { ToastAction } from "@/components/ui/toast"
 import { useToast } from "@/components/ui/use-toast"
 import { format } from "date-fns";
-import {AxiosInstance} from "@/utils/AxiosInstance";
-import {toast as Toast} from 'sonner';
+import { AxiosInstance } from "@/utils/AxiosInstance";
+import { toast as Toast } from 'sonner';
 import { useSessionStore } from "@/store/SessionStore";
+import { StudentPost } from "./_DummyReminder";
+import { useStudentPostStore } from "@/store/StudentPostStore";
+
+
 
 export function CreateAnnouncement() {
     const { semester } = useContext(SemesterContext)!;
     const [post, setPost] = useState<string>('');
-    const [files, setFiles] = useState<File[]>([]);
-    const limitString = (text: string): string => {
-        if (text.length <= 7) {
-            return text;
-        }
-
-        return text.substring(0, 12) + '...';
-    }
+    const [files, setFiles] = useState<string[]>([]);
     const { toast } = useToast();
 
     const student = useSessionStore((state) => state.student);
     const setStudent = useSessionStore((state) => state.setStudent);
-    
-    const postAnnouncement = async () => {
+    const addPost = useStudentPostStore((state) => state.addPost);
+     
+    const limitString = (text: string): string => {
+        if (text.length <= 7) {
+            return text;
+        }
+        return text.substring(0, 12) + '...';
+    }
 
+
+
+	// const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	// 	const file = e.target.files?.[0];
+
+	// 	if (file) {
+	// 		if (validateFile(file)) {
+	// 			const reader = new FileReader();
+	// 			reader.onloadend = () => {
+
+    //             };
+	// 			reader.readAsDataURL(file);
+	// 		}
+	// 	}
+	// };
+
+    const postAnnouncement = async () => {
         if (student === undefined) {
-            return (
+            return Toast.error("Error", {
+                cancel: true,
+                description: "Student information not found",
+                duration: 5000
+            });
+        }
+
+        const currentDate = new Date();
+        const formattedDate = format(currentDate, 'yyyy-MM-dd HH:mm:ss');
+
+        const newPost: StudentPost = {
+            postId: Date.now(), 
+            author: student.first_name + ' ' + student.last_name,
+            postContent: post,
+            postDate: currentDate,
+            files: files
+        };
+
+        try {
+                addPost(newPost);
+                setPost('');
+                setFiles([]);
+        } catch (error) {
+            Toast.error("Error", {
+                cancel: true,
+                description: "Failed to post announcement. Please try again.",
+                duration: 5000
+            });
+        }
+    }
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            const fileList = Array.from(e.target.files);
+            if (fileList.length <= 8) {
+
+                const fileNames = fileList.map((file) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        setFiles(prev => [...prev, reader.result as string]);
+                    }
+                    reader.readAsDataURL(file);
+                });
+            } else {
                 Toast.error("Error", {
                     cancel: true,
-                    description: "Student information not found",
+                    description: "You can only upload up to 8 files.",
                     duration: 5000
-                })
-            )
-        }
-
-        const date = format('2024-07-06', 'yyyy-MM-dd HH:mm:ss');
-
-        const announcement = {
-            academic_session_id: student?.session_id,
-            announcement: post,
-            date: date,
-            student_id: student?.student_id,
-        }
-        const result = await AxiosInstance.post(
-            '/api/student-info/announcement',
-            {
-
+                });
             }
-            );
-        
+        }
     }
-    useEffect(() => { 
-        const formData = new FormData();
-        files.forEach((file) => {
-            formData.append('file', file)
-        })
-    }, [])
 
     return (
         <Dialog>
@@ -95,11 +136,11 @@ export function CreateAnnouncement() {
                         </Label>
                         <Textarea
                             id="post"
-                            placeholder="Whats on your mind?"
-                            className="col-span-5 placeholder:italic placeholder:text-slate-400 "
+                            placeholder="What's on your mind?"
+                            className="col-span-5 placeholder:italic placeholder:text-slate-400"
                             rows={4}
                             value={post}
-                            onChange={(e) => { setPost(e.target.value)}}
+                            onChange={(e) => { setPost(e.target.value) }}
                         />
                     </div>
                     <div className="flex flex-col gap-y-4">
@@ -111,47 +152,24 @@ export function CreateAnnouncement() {
                             className="w-28 text-center" 
                             name="Upload files"
                             multiple
-                            onChange={(e) => { 
-                                if (e.target.files) {
-                                    const file = Array.from(e.target.files); 
-                                    if (file.length <= 8) {
-
-                                        setFiles((prev) => [...prev, ...file]);
-                                    } else {
-
-                                    }
-                                }    
-                            }}
+                            onChange={handleFileChange}
                         />
                     </div>
                     <div className="flex flex-col gap-y-2">
-                        {files ?  (
-                            files.map((val, ind) => (
-                            <div className="flex flex-row w-80 gap-x-8 justify-between">
-                                    <p className="font-medium text-black dark:text-white overflow-hidden">{limitString(val.name)}</p>
-                                    <p className="font-medium text-black dark:text-white">{val.size}bytes</p>
-                                    <button>
-                                        <X size={20} className="text-black dark:text-white" onClick={() => {
-                                            const newFiles = files.filter((_, index) => index !== ind)
-                                            setFiles(newFiles)
-                                        }} />
-                                    </button>
+                        {files.map((fileName, ind) => (
+                            <div key={ind} className="flex flex-row w-80 gap-x-8 justify-between">
+                                <p className="font-medium text-black dark:text-white overflow-hidden">{limitString(fileName)}</p>
+                                <button>
+                                    <X size={20} className="text-black dark:text-white" onClick={() => {
+                                        setFiles(files.filter((_, index) => index !== ind));
+                                    }} />
+                                </button>
                             </div>
-                        ))
-                        ) : (null)}
+                        ))}
                     </div>
                 </div>
                 <DialogClose className="flex flex-row justify-end items-center">
-                <Button type="submit" onClick={() => { 
-                        toast({
-                            title: "Announcement Successfull Uploaded",
-                            description: "It will show in the announce section any minute",
-                            action: (
-                                <ToastAction altText="Review Announcement">Review</ToastAction>
-                            ),
-                        })
-                        // Add Post Submission 
-                     }}>Post</Button>
+                    <Button type="submit" onClick={postAnnouncement}>Post</Button>
                 </DialogClose>
             </DialogContent>
         </Dialog>
