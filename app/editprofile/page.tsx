@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 
 import { z } from "zod";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { CalendarIcon, Edit, Edit2, FileClock, Loader2, LucideSchool, MapPin, User } from 'lucide-react';
+import { CalendarIcon, Edit, Edit2, FileClock, Loader2, LucideSchool, MapPin, UploadIcon, User, X } from 'lucide-react';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -22,6 +22,8 @@ import { useAddressStore } from '@/store/AddressStore';
 import { useEditStore } from '@/util/EditStore';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { generatePdf } from '@/utils/generatePdf';
+import { Label } from '@/components/ui/label';
+import { useImageStore } from '@/store/ImageStore';
 
 
 const addressSchema = z.object({
@@ -181,19 +183,19 @@ const Home = () => {
 		compareValues('guardian_name', formValues.guardian_name, student.guardian_name);
 		compareValues('hall_name', formValues.hall_name, student.hall_name);
 
-		
+
 		compareAddress('presendAdress', formValues.presendAdress, currentAddress);
 		compareAddress('permanentAdress', formValues.permanentAdress, permanentAddress);
 		compareAddress('guardianAdress', formValues.guardianAdress, guardianAddress);
 
 		console.log(changes);
 	}
-	
+
 	const getAcademicSession = (academic_session_id: number): string => {
 		const year = parseInt(academic_session_id.toString().slice(0, 4));
 		return `${year}-${(year + 1) % 100}`;
 	};
-	
+
 	const onSubmitApplication = async () => {
 		setLoading(true);
 		await generatePdf({
@@ -235,6 +237,12 @@ const Home = () => {
 							Hall Information
 						</div>
 					</TabsTrigger>
+					<TabsTrigger value='image_info'>
+						<div className='flex flex-row gap-2 items-center'>
+							<UploadIcon size={18} className='text-black' />
+							Change Image
+						</div>
+					</TabsTrigger>
 				</TabsList>
 				<TabsContent value='personal_info' className='flex justify-center'>
 					<PersonalInfoForm
@@ -252,6 +260,10 @@ const Home = () => {
 					<HallInfoForm
 						onSubmit={onSubmit}
 						form={form}
+					/>
+				</TabsContent>
+				<TabsContent value="image_info">
+					<ImageInfoForm
 					/>
 				</TabsContent>
 			</Tabs>
@@ -285,8 +297,8 @@ const Home = () => {
 						variant={"destructive"}
 						type="submit" className='w-1/3 self-center mr-4 mt-12 flex flex-row gap-4'>
 						<div>
-							{ loading ?  <Loader2 className='text-white animate-spin'/> :
-							<FileClock size={20} className='text-white' /> }
+							{loading ? <Loader2 className='text-white animate-spin' /> :
+								<FileClock size={20} className='text-white' />}
 						</div>
 						Submit Application
 					</Button>
@@ -1045,6 +1057,86 @@ const HallInfoForm = ({ form, onSubmit }: { form: UseFormReturn<z.infer<typeof f
 			</form>
 		</Form>
 	)
+}
+
+const ImageInfoForm = () => {
+	const pervImage = useImageStore((state) => state.image);
+	const setImageStore = useImageStore((state) => state.setImage);
+	const [image, setImage] = useState<string | null>(pervImage);
+	const [error, setError] = useState<string | null>(null);
+
+
+	const validateFile = (file: File): boolean => {
+		const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+		if (!validTypes.includes(file.type)) {
+			setError('Invalid file type. Please upload a JPEG, PNG, or GIF image.');
+			return false;
+		}
+		if (file.size > 5 * 1024 * 1024) { // 5MB limit
+			setError('File size exceeds 5MB limit.');
+			return false;
+		}
+		return true;
+	};
+
+	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files?.[0];
+		setError(null);
+
+		if (file) {
+			if (validateFile(file)) {
+				const reader = new FileReader();
+				reader.onloadend = () => {
+					setImage(reader.result as string);
+					setImageStore(reader.result as string);
+				};
+				reader.readAsDataURL(file);
+			}
+		}
+	};
+
+	const handleRemoveImage = () => {
+		setImage(null);
+		setError(null);
+		setImageStore(null);
+	};
+
+	return (
+		<div className="max-w-md mx-auto p-4">
+			<Label htmlFor="image-upload" className="block mb-2">
+				Upload Image (JPEG, PNG, or GIF, max 5MB)
+			</Label>
+			<Input
+				id="image-upload"
+				type="file"
+				accept="image/jpeg,image/png,image/gif"
+				onChange={handleImageChange}
+				className="mb-4"
+			/>
+			{error && (
+				<Label className="block text-warning-foreground" htmlFor="image-upload">
+					{error}
+				</Label>
+			)}
+			{image ? (
+				<div className="relative flex items-center justify-center">
+					<img
+						src={image}
+						alt="Uploaded preview"
+						className="w-40 h-40 rounded-full"
+					/>
+					<Button
+						variant="outline"
+						size="icon"
+						className="absolute top-2 right-16"
+						onClick={handleRemoveImage}
+					>
+						<X className="h-4 w-4" />
+					</Button>
+				</div>
+			) : null}
+		</div>
+	);
 }
 
 export default Home

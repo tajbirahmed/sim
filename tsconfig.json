@@ -32,7 +32,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-, "app/result/[course_id]"  ],
+, "app/result/[course_id]", "components/BarChart.js"  ],
   "exclude": [
     "node_modules"
   ]

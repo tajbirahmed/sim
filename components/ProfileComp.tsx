@@ -17,10 +17,16 @@ import {
 	CardTitle,
 } from "@/components/ui/card"
 import Link from 'next/link';
+import { useSessionStore } from '@/store/SessionStore';
+import { useImageStore } from '@/store/ImageStore';
 
 const ProfileComp = () => {
 	const [name, setName] = useState<string | undefined>(undefined);
 	const [openPopOver, setOpenPopOver] = useState<boolean>(false);
+	const student = useSessionStore(state => state.student);
+
+	const pervImage = useImageStore((state) => state.image);
+
 
 	const handleClick = () => { 
 		setOpenPopOver(!openPopOver);
@@ -31,13 +37,14 @@ const ProfileComp = () => {
 		<div className='flex flex-row space-x-3 w-full mt-2 p-2 mb-1 bg-slate-100 rounded-md dark:bg-slate-900' onClick={handleClick} >
 			<div className='w-10 h-10 rounded-lg'>
 				<Avatar className={'rounded-lg'}>
-					<AvatarImage src="https://cdn.iconscout.com/icon/premium/png-512-thumb/avatar-178-132169.png?f=webp&w=256" alt="@shadcn" />
+					<AvatarImage src={
+						pervImage ? pervImage : "https://cdn.iconscout.com/icon/premium/png-512-thumb/avatar-178-132169.png?f=webp&w=256"} alt="@shadcn" />
 					<AvatarFallback className={'rounded-lg text-[#0c4c6c] dark:text-white'}>PP</AvatarFallback>
 				</Avatar >
 			</div>
 			<div className='w-full'>
 				<h2 className='text-[#0c4c6c] font-semibold text-[18px] dark:text-white'>
-					Tajbir Ahmed
+					{student?.first_name} {student?.last_name}
 				</h2>
 				<h4 className='text-[16px] dark:text-white'>
 					Student

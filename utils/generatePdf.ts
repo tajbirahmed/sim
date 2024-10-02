@@ -66,6 +66,14 @@ export const generatePdf = async ( {
     const wrappedChagesText = doc.splitTextToSize(changesText.join(''), 180);
     doc.text(wrappedChagesText, 20, 100);
 
+    const footerText = `I kindly request you to make the necessary updates to ensure that all future communication and records reflect the correct information.
+
+I am attaching copies of the relevant documents for your reference and verification.
+
+Thank you for your attention to this matter. I look forward to your prompt action.`
+
+    const wrappedFooterText = doc.splitTextToSize(footerText, 180);
+    doc.text(wrappedFooterText, 20, 150);
     doc.text('I would be grateful if you could make the necessary changes as soon as possible.', 20, 200);
 
     doc.text('Sincerely,', 20, 210);

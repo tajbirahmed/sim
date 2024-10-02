@@ -12,15 +12,15 @@ import { useSideBarStore } from '@/store/sidebarstore';
 
 const SideBar = () => {
   const { content, setContent } = useContext(SideBarContext)!;
-
   const isOpen = useSideBarStore((state) => state.isOpen);
+  
 
   if (!isOpen) {
     return null;
   }
   
   return (
-    <div className="h-[92vh] min-w-44 overflow-y-hidden sticky flex flex-col shadow-md shadow-slate-500 dark:shadow-slate-800 rounded-r-xl
+    <div className="h-screen min-w-44 overflow-y-hidden sticky flex flex-col shadow-md shadow-slate-500 dark:shadow-slate-800 rounded-r-xl
     ">
       <ProjectInfoComp 
           
