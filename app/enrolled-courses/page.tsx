@@ -51,7 +51,7 @@ const Page = () => {
 			</h1>
 			<div className="flex flex-row flex-wrap gap-5 mt-10 w-full gap-y-12">
 				{courses.map((course, index) => (
-					<Button variant={"ghost"} key={index} className="bg-white rounded-lg shadow-md flex flex-col dark:bg-black w-[320px] h-[150px] p-0 items-start gap-2"
+					<Button variant={"ghost"} key={index} className="bg-white rounded-lg shadow-md flex flex-col dark:bg-black w-[320px] h-[200px] p-0 items-start gap-2"
 						onClick={() => { 
 							// await getCourseById(course.course_id);
 							router.push(`/enrolled-courses/${course.course_id}`)
