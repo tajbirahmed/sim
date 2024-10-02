@@ -1,41 +1,29 @@
 "use client";
-import * as React from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import * as React from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { format } from "date-fns";
 import {
     Table,
     TableBody,
-    TableCaption,
-    TableCell,
     TableHead,
     TableHeader,
     TableRow,
+    TableCell,
 } from "@/components/ui/table";
-import { dummyResults } from "./DummyResults"; // Adjust the import path
 import { ResultDataType } from "@/types/ResultTypes";
 import { useSemester } from "@/contexts/SemesterContexts";
 import { useSession } from "@/contexts/SessionContext";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-
-
-
+import { generate_pdf } from "./generatePDF"; // Import the generate_pdf function
+import { Student } from "@/types/StundentType"; // Ensure the correct path
 
 export function ResultCard() {
+    const [pubdate, setPubDate] = React.useState<Date>(new Date());
+    const [resultData, setResultData] = React.useState<ResultDataType[] | undefined>(undefined);
+    const [studentData, setStudentData] = React.useState<Student | undefined>(undefined); // Set as a single student
 
-    const [pubdate, setpubDate] = React.useState<Date>(new Date());
-    const [resultData, setResultData] = React.useState<ResultDataType[] | undefined>(undefined)
-
-    const {
-        semester
-    } = useSemester();
-
-    const {
-        student
-    } = useSession();
-
-    const router = useRouter(); 
+    const { semester } = useSemester();
+    const { student } = useSession();
 
     function getGrade(gpa: number): string {
         if (gpa === 4.00) {
@@ -61,29 +49,26 @@ export function ResultCard() {
         }
     }
 
-
     const getResult = async () => {
         const baseUrl = process.env.NEXT_PUBLIC_BASEURL!;
 
         if (student) {
-            const {
-                academic_session_id,
-                student_id
-            } = student;
+            const { academic_session_id, student_id } = student;
 
             const resultUrl = `${baseUrl}/api/student-info/result?academic_session_id=${academic_session_id}&student_id=${student_id}`;
             try {
                 const response = await fetch(resultUrl, {
                     method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json'
-                    }
+                        'Content-Type': 'application/json',
+                    },
                 });
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 const result = await response.json();
                 setResultData(result as ResultDataType[]);
+                setStudentData(student); // Set the student data here
                 console.log(result);
             } catch (error) {
                 console.error('[components/ResultComponents/ResultCard.tsx] There was a problem with your fetch operation:', error);
@@ -91,67 +76,67 @@ export function ResultCard() {
         } else {
             console.error('[components/ResultComponents/ResultCard.tsx] Student is undefined');
         }
-
-
-    }
+    };
 
     React.useEffect(() => {
-
         getResult();
-
-    }, [student])
+    }, [student]);
 
     return (
         <Card className="w-auto justify-center mt-20">
-            {resultData
-                ?
-                (
-                    <div>
-                        <CardHeader >
-                            <CardTitle className="text-center">{semester}<sup className="">{semester === 1 ? "st" : semester === 2 ? "nd" : semester === 3 ? "rd" : "th"}</sup>{" Semester"} Result</CardTitle>
-                            <CardDescription className="text-lg">Published Date: {format(pubdate, "PPP")}</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <Table>
-                                <TableHeader>
-                                    <TableRow className="">
-                                        <TableHead className="font-bold text-center">Course Code</TableHead>
-                                        <TableHead className="min-w-[280px] font-bold text-center">Course Title</TableHead>
-                                        <TableHead className="font-bold text-center">Credits</TableHead>
-                                        <TableHead className="text-center ">Letter Grade</TableHead>
-                                        <TableHead className="text-center ">Grade Point</TableHead>
-                                        <TableHead className="text-center">Credit Points</TableHead>
+            {resultData && studentData ? (
+                <div>
+                    <CardHeader>
+                        <CardTitle className="text-center">
+                            {semester}
+                            <sup>
+                                {semester === 1
+                                    ? 'st'
+                                    : semester === 2
+                                    ? 'nd'
+                                    : semester === 3
+                                    ? 'rd'
+                                    : 'th'}
+                            </sup>{' '}
+                            Semester Result
+                        </CardTitle>
+                        <CardDescription className="text-lg">
+                            Published Date: {format(pubdate, 'PPP')}
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead className="font-bold text-center">Course Code</TableHead>
+                                    <TableHead className="min-w-[280px] font-bold text-center">Course Title</TableHead>
+                                    <TableHead className="font-bold text-center">Credits</TableHead>
+                                    <TableHead className="text-center">Letter Grade</TableHead>
+                                    <TableHead className="text-center">Grade Point</TableHead>
+                                    <TableHead className="text-center">Credit Points</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {resultData.map((val, index) => (
+                                    <TableRow key={index}>
+                                        <TableCell className="text-center">{val.course_code}</TableCell>
+                                        <TableCell>{val.course_title}</TableCell>
+                                        <TableCell className="text-center">{val.credit}</TableCell>
+                                        <TableCell className="text-center">{getGrade(val.gpa)}</TableCell>
+                                        <TableCell className="text-center">{val.gpa}</TableCell>
+                                        <TableCell className="text-center">{val.gpa * val.credit}</TableCell>
                                     </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {resultData.map((val, index) => (
-                                        // <Link href={`/course/${val.course_id}`} passHref key={index}>
-                                        <TableRow className="" key={index} onClick={() => { 
-                                            router.push(`/result/${val.course_id}`);
-                                        }} >
-                                                <TableCell className="text-center">{val.course_code}</TableCell>
-                                                <TableCell className="">{val.course_title}</TableCell>
-                                                <TableCell className="text-center">{val.credit}</TableCell>
-                                                <TableCell className="text-center ">{getGrade(val.gpa)}</TableCell>
-                                                <TableCell className="text-center ">{val.gpa}</TableCell>
-                                                <TableCell className="text-center ">{val.gpa * val.credit}</TableCell>
-                                            </TableRow>
-                                        // </Link>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </CardContent>
-                        <CardFooter className="flex justify-end">
-                            <Button>Download</Button>
-                        </CardFooter>
-                    </div>
-                )
-                :
-                (
-                    <p className="text-lg text-center font-bold">Failed Getting Data</p>
-                )
-            }
-
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </CardContent>
+                    <CardFooter className="flex justify-end">
+                        <Button onClick={() => generate_pdf(resultData, studentData, semester)}>Download</Button>
+                    </CardFooter>
+                </div>
+            ) : (
+                <p className="text-lg text-center font-bold">Failed Getting Data</p>
+            )}
         </Card>
-    )
+    );
 }
