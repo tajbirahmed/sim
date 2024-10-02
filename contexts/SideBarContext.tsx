@@ -10,7 +10,7 @@ interface SideBarProps {
 export const SideBarContext = createContext<SideBarProps | undefined>(undefined)
 
 export const SideBarProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => { 
-    const [content, setContent] = useState("home")
+    const [content, setContent] = useState("dashboard")
     return (
         <SideBarContext.Provider value={{content, setContent}}>
             { children }

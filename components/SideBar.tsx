@@ -6,24 +6,24 @@ import SideBarComp from './SideBarComp';
 import ProjectInfoComp from './ProjectInfoComp';
 import ProfileComp from './ProfileComp';
 import { SideBarContext } from '@/contexts/SideBarContext';
+import { useSideBarStore } from '@/store/sidebarstore';
 
 
 
 const SideBar = () => {
   const { content, setContent } = useContext(SideBarContext)!;
+
+  const isOpen = useSideBarStore((state) => state.isOpen);
+
+  if (!isOpen) {
+    return null;
+  }
   
   return (
     <div className="h-[92vh] min-w-44 overflow-y-hidden sticky flex flex-col shadow-md shadow-slate-500 dark:shadow-slate-800 rounded-r-xl
     ">
       <ProjectInfoComp 
           
-      />
-      <SideBarComp 
-        title='Home'
-        link="/"
-        icon={<HomeIcon size={ 15 } className='mt-[4px]' /> }
-        selected={content}
-        setSelected={setContent}
       />
       <SideBarComp
         title='Dashboard'

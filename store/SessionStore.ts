@@ -27,12 +27,13 @@ export const useSessionStore = create<StoreType>() (
     )
 )
 
-export const getSession = async () : Promise<SessionType | undefined> => {
+
+export const getSession = async (email: string, password: string) : Promise<SessionType | undefined> => {
     const response = await AxiosInstance.post(
         '/api/login/student',
         {
-            student_id: parseInt(process.env.NEXT_PUBLIC_USER_EMAIL!),
-            password: process.env.NEXT_PUBLIC_USER_PASSWORD!
+            student_id: parseInt(email),
+            password: password
         }
     )
     if (response.status !== 200) {
