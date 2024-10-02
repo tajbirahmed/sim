@@ -18,6 +18,8 @@ import { useSemester } from "@/contexts/SemesterContexts";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSessionStore } from "@/store/SessionStore";
+import { Download, DownloadIcon, Loader2 } from "lucide-react";
+import { generateResultPdf } from "@/util/generatePdf";
 
 
 
@@ -32,6 +34,7 @@ export function ResultCard() {
     } = useSemester();
 
     const student = useSessionStore(state => state.student);
+    const [loading, setLoading] = React.useState<boolean>(false);
 
     const router = useRouter(); 
 
@@ -94,6 +97,14 @@ export function ResultCard() {
 
     }
 
+    const downloadPdf = async () => {
+        setTimeout(() => {
+            setLoading(true);
+            generateResultPdf(); 
+        }, 1000);
+        setLoading(false);
+    }
+
     React.useEffect(() => {
 
         getResult();
@@ -128,8 +139,8 @@ export function ResultCard() {
                                         <TableRow className="" key={index} onClick={() => { 
                                             router.push(`/result/${val.course_id}`);
                                         }} >
-                                                <TableCell className="text-center">{val.course_code}</TableCell>
-                                                <TableCell className="">{val.course_title}</TableCell>
+                                                <TableCell className="text-center uppercase">{val.course_code}</TableCell>
+                                                <TableCell className="capitalize">{val.course_title}</TableCell>
                                                 <TableCell className="text-center">{val.credit}</TableCell>
                                                 <TableCell className="text-center ">{getGrade(val.gpa)}</TableCell>
                                                 <TableCell className="text-center ">{val.gpa}</TableCell>
@@ -141,7 +152,17 @@ export function ResultCard() {
                             </Table>
                         </CardContent>
                         <CardFooter className="flex justify-end">
-                            <Button>Download</Button>
+                            <Button
+                                onClick={() => {
+                                    downloadPdf();
+                                }}
+                            >
+                                <div className="w-full h-full flex flex-row gap-2">
+                                    {loading ? <Loader2 className="text-white animate-spin" size={20} />
+                                    : <DownloadIcon className="text-white" size={20} />}
+                                    {loading? "Downloading..." : "Download"}
+                                </div>
+                            </Button>
                         </CardFooter>
                     </div>
                 )

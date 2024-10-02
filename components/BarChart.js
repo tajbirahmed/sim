@@ -1,8 +1,10 @@
 "use client"
 import { useRef, useEffect } from "react";
 import { Chart } from "chart.js/auto";
+import { useSemesterResultStore } from "@/store/semesterResultStore";
 
 export default function BarChart() {
+  const results = useSemesterResultStore((state) => state.results);
   const chartRef = useRef(null);
   const chartInstanceRef = useRef(null);
 
@@ -10,15 +12,18 @@ export default function BarChart() {
     if (chartInstanceRef.current) {
       chartInstanceRef.current.destroy();
     }
+    const data = results.map((val, ind) => {
+      return val.cgpa;
+    })
     const context = chartRef.current.getContext("2d");
     const newChart = new Chart(context, {
       type: "bar",
       data: {
-        labels: ["Semester1", "Semester2", "Semester3","Semester3","Semester4","Semester5"],
+        labels: ["1st Sem.", "2nd Sem.", "3rd Sem.","4th Sem.","5th Sem.","6th Sem.", "7th Sem.", "8th Sem."],
         datasets: [
           {
             label: "Result",
-            data: [3.1, 3.5, 3.2,3.4,3.2,2.7],
+            data: data,
             backgroundColor: [
               "rgb(255, 99, 132)",
               "rgb(255, 159, 164)",
@@ -45,6 +50,10 @@ export default function BarChart() {
     });
     chartInstanceRef.current = newChart;
   }, []);
+
+  if (results === undefined) {
+    return <p>Error fethcing results.</p>;
+  }
 
   return (
     <div style={{ position: "relative", width: "60vw", height: "80vw" }}>
