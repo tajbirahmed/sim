@@ -26,6 +26,40 @@ export interface Course {
    profile_image_id: number;
 }
 
+export interface CourseType {
+   course_code: string;
+   course_id: number;
+   course_title: string;
+   course_type: string;
+   credit: number;
+   academic_session_id: number;
+   teachers: TeacherType[];
+}
+
+export interface TeacherType {
+   teacher_id: number;
+   first_name: string;
+   last_name: string; 
+   designation: string; 
+   title: string;
+}
+
+export interface CourseDetailsType {
+   exam_id: number;
+   catm_mark: number;
+   attendance_mark: number;
+   total_paper_mark: TotalPaperMarkType[]
+}
+
+export interface TotalPaperMarkType {
+   set: 'A' | 'B'; 
+   total_mark: number;
+}
+
+
+// "Total_Paper_Mark.set as question_set", 
+// "Total_Paper_Mark.total_mark as total_mark",
+
 export const NavData =[
    {
     title: "Data Communication",

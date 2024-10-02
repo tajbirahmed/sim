@@ -1,6 +1,4 @@
-"use client";
 import NavigateComp from "@/components/NavigateComp";
-import React, { useState } from "react";
 
 
 export default function ResultRoot({

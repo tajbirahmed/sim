@@ -4,7 +4,6 @@ import {
     Dialog,
     DialogContent,
     DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -13,13 +12,16 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { SemesterContext } from "@/contexts/SemesterContexts"
 import { SemesterHelper } from "@/utils/SemesterHelper";
-import { Plus, PlusIcon, X } from "lucide-react"
+import { Plus, X } from "lucide-react"
 import { useContext, useEffect, useState } from "react"
 import { Textarea } from "../ui/textarea";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { ToastAction } from "@/components/ui/toast"
 import { useToast } from "@/components/ui/use-toast"
 import { format } from "date-fns";
+import {AxiosInstance} from "@/utils/AxiosInstance";
+import {toast as Toast} from 'sonner';
+import { useSessionStore } from "@/store/SessionStore";
 
 export function CreateAnnouncement() {
     const { semester } = useContext(SemesterContext)!;
@@ -33,29 +35,36 @@ export function CreateAnnouncement() {
         return text.substring(0, 12) + '...';
     }
     const { toast } = useToast();
+
+    const student = useSessionStore((state) => state.student);
+    const setStudent = useSessionStore((state) => state.setStudent);
     
-    const getData = async () => { 
-        const date = format('2024-07-06', 'yyyy-MM-dd HH:mm:ss');
-        console.log(date);
-        
-        const announcement = {
-            academic_session_id: 20180301,
-            announcement: "Testing announcement using post 2",
-            date: date,
-            student_id: 19701037
+    const postAnnouncement = async () => {
+
+        if (student === undefined) {
+            return (
+                Toast.error("Error", {
+                    cancel: true,
+                    description: "Student information not found",
+                    duration: 5000
+                })
+            )
         }
-        const result = await fetch(
-            `http://localhost:5000/api/student-info/announcement`, 
+
+        const date = format('2024-07-06', 'yyyy-MM-dd HH:mm:ss');
+
+        const announcement = {
+            academic_session_id: student?.session_id,
+            announcement: post,
+            date: date,
+            student_id: student?.student_id,
+        }
+        const result = await AxiosInstance.post(
+            '/api/student-info/announcement',
             {
-                method: 'POST', 
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(announcement),
+
             }
-        )
-        const response = await result.json();
-        console.log(response)
+            );
         
     }
     useEffect(() => { 
@@ -63,7 +72,6 @@ export function CreateAnnouncement() {
         files.forEach((file) => {
             formData.append('file', file)
         })
-        getData()
     }, [])
 
     return (

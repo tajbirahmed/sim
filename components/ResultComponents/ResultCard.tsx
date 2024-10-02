@@ -15,9 +15,9 @@ import {
 import { dummyResults } from "./DummyResults"; // Adjust the import path
 import { ResultDataType } from "@/types/ResultTypes";
 import { useSemester } from "@/contexts/SemesterContexts";
-import { useSession } from "@/contexts/SessionContext";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useSessionStore } from "@/store/SessionStore";
 
 
 
@@ -31,9 +31,7 @@ export function ResultCard() {
         semester
     } = useSemester();
 
-    const {
-        student
-    } = useSession();
+    const student = useSessionStore(state => state.student);
 
     const router = useRouter(); 
 

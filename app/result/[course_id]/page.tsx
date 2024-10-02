@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from '@/components/ui/button';
-import { useSession } from '@/contexts/SessionContext';
+import { useSessionStore } from '@/store/SessionStore';
 import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { use, useEffect, useState } from 'react'
 
@@ -31,9 +31,7 @@ const CourseResultDetails = () => {
         course_id: string
     }>();
 
-    const {
-        student
-    } = useSession();
+    const student = useSessionStore((state) => state.student);
 
     const [courseResult, setCourseResult] = useState<ExamDetails[]>([])
 

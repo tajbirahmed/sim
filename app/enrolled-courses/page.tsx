@@ -2,96 +2,43 @@
 import React, { use, useEffect, useState } from 'react';
 import { Course, NavData } from '@/constants/course';
 import NavigateComp from '@/components/NavigateComp';
-import { useSession } from '@/contexts/SessionContext';
-import { useSemester } from '@/contexts/SemesterContexts';
+import {
+	Avatar,
+	AvatarFallback,
+	AvatarImage,
+} from "@/components/ui/avatar"
 import { useRouter } from 'next/navigation';
+import { useSessionStore } from '@/store/SessionStore';
+import { useCourseSemester } from '@/store/CourseSemester';
+import { getCoursesForSemester } from '@/util/getCoursesForSemester';
+import { LoaderIcon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { LoadingScreen } from '@/components/LoadingScreen';
+import { getCourseById } from '@/util/getCourseWithId';
 
 
 
 
 const Page = () => {
 
-	const router = useRouter(); 
+	const router = useRouter();
 
-	const [courses, setCourses] = useState<Course[]>([]); 
-	const [asId, setAsId] = useState<number | undefined>(undefined);
-	const {
-		student
-	} = useSession(); 
 
-	const createQueryString = (name : string, value : number) => {
-		const params = new URLSearchParams();
-		params.set(name, value.toString());
 
-		return params.toString();
-	};
+	const student = useSessionStore((state) => state.student);
+	const courses = useCourseSemester((state) => state.courses);
 
-	function changeMiddleDigits(number: number, middleDigits: number): number {
-		const numberStr = number.toString();
-
-		if (numberStr.length !== 8) {
-			throw new Error("The number must be 8 digits long.");
-		}
-
-		const firstPart = numberStr.slice(0, 4);
-		const lastPart = numberStr.slice(6);
-
-		const newNumberStr = firstPart + middleDigits.toString().padStart(2, '0') + lastPart;
-
-		return parseInt(newNumberStr, 10);
-	}
-
-	const getCourses = async () => { 
-		if (asId) {
-			try {
-				const baseUrl = process.env.NEXT_PUBLIC_BASEURL!;
-				const courseUrl = `${baseUrl}/api/student-info/course-semester?academic_session_id=${20170101}`; // asId
-				const response = await fetch(
-					courseUrl, {
-						method: 'GET',
-						headers: {
-							'Content-Type': 'application'
-						}, 
-						cache: 'force-cache'
-					}
-				);
-				const result = await response.json();
-				setCourses(result as Course[]); 
-				console.log(result);
-			} catch (error) {
-				console.log("[enrolled-courses/page.tsx] error fetching courses", error);
-			}
-			
-		} else { 
-			console.log("[enrolled-courses/page.tsx] academic_session_id not found");
-		}		
-	}
-
-	const {
-		semester
-	} = useSemester(); 
 
 	useEffect(() => {
-		if (student) { 
-			setAsId(student.academic_session_id);
-			// console.log(student.academic_session_id);
+		if (student) {
+			getCoursesForSemester(student.academic_session_id);
 		}
 	}, [student])
 
-	useEffect(() => { 
-		if (student) {
-			setAsId(changeMiddleDigits(student.academic_session_id, semester));
-			// getCourses();
-			// console.log(changeMiddleDigits(student.academic_session_id, semester));
-		}
-		
-	}, [semester])
+	if (courses === undefined) {
+		return <LoadingScreen />
+	}
 
-	useEffect(() => { 
-		if (asId) {
-			getCourses();
-		}
-	}, [asId])
 
 	return (
 		<div className='flex flex-col ml-5  h-[94vh] overflow-y-auto w-full no-scrollbar pt-6'>
@@ -99,23 +46,51 @@ const Page = () => {
 				title="Courses"
 			// make={true}
 			/>
-			<div className="grid grid-cols-3 grid-flow-row gap-x-5 mt-10">
+			<h1 className='text-2xl text-black font-semibold mt-12'>
+				Enrolled Courses
+			</h1>
+			<div className="flex flex-row flex-wrap gap-5 mt-10 w-full gap-y-12">
 				{courses.map((course, index) => (
-					<button key={index} className="bg-white rounded-lg shadow-md flex flex-col dark:bg-black" onClick={() => {
-						router.push(`/enrolled-courses/${course.course_id}?${createQueryString("academic_session_id", asId!)}`)}}>
-						<div className="bg-black dark:bg-gray-500 text-white rounded-t-lg flex flex-col items-start px-5 py-3">
-							<p className="text-lg font-bold text-start">{course.course_title}</p>
-							<p className='font-semibold text-gray-300 dark:text-white'>{course.first_name + " " + course.last_name }</p>
+					<Button variant={"ghost"} key={index} className="bg-white rounded-lg shadow-md flex flex-col dark:bg-black w-[320px] h-[150px] p-0 items-start gap-2"
+						onClick={() => { 
+							// await getCourseById(course.course_id);
+							router.push(`/enrolled-courses/${course.course_id}`)
+						}}
+					>
+						<div className='flex flex-col items-center justify-center gap-2 w-full h-full'>
+							<div className=" bg-gradient-to-tr from-[#586c7c] to-[#000000] dark:bg-gray-500 text-white rounded-t-lg flex flex-col gap-0 items-start w-full h-32 p-2">
+								<p className="text-lg font-bold text-start text-wrap line-clamp-1 capitalize">{course.course_title}</p>
+								<div className='flex flex-row justify-between w-full items-center'>
+									<p className='text-muted font-normal text-wrap line-clamp-1 capitalize'>
+										{course.teachers.map((teacher, index) => (
+											<p key={index}>
+												{teacher.designation} {teacher.title} {teacher.first_name} {teacher.last_name}
+												{course.teachers.length - 1 !== index ? ', ' : ''}
+											</p>
+										))}
+									</p>
+									<div className='w-10 h-10 rounded-full border border-primary'>
+										<Avatar>
+											<AvatarImage src="https://cdn.iconscout.com/icon/premium/png-512-thumb/avatar-178-132169.png?f=webp&w=256" alt="@shadcn" />
+											<AvatarFallback>CN</AvatarFallback>
+										</Avatar>
+									</div>
+								</div>
+							</div>
+
+							<div className="flex flex-col gap-2 self-start dark:bg-black py-4 w-full items-start px-2 bg-muted-foreground/5">
+								<p>
+									<strong className='text-black font-medium'>Course Code:</strong> {course.course_code}</p>
+								<p><strong className='text-black font-medium'>Course Credit:</strong> {course.credit}</p>
+							</div>
 						</div>
-						<div className="pt-5 flex flex-col items-start px-5 py-2 dark:bg-black">
-							<p><strong>Course Code:</strong> {course.course_code}</p>
-							<p><strong>Course Credit:</strong> {course.credit}</p>
-						</div>
-					</button>
+					</Button>
 				))}
 			</div>
 		</div>
 	);
 };
+
+
 
 export default Page;

@@ -5,8 +5,6 @@ import { Button } from "@/components/ui/button"
 import {
     Card,
     CardContent,
-    CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
@@ -27,7 +25,7 @@ import { Settings } from "lucide-react"
 import { semesterData } from "./_semesterWithValue"
 import { useContext, useEffect, useState } from "react"
 import { SemesterContext, useSemester } from "@/contexts/SemesterContexts"
-import { useSession } from "@/contexts/SessionContext";
+import { useSessionStore } from "@/store/SessionStore";
 
 type StudentProgram = {
     academic_session_id: number;
@@ -49,9 +47,7 @@ export default function SettingPopOver() {
         setSemester
     } = useSemester(); 
 
-    const {
-        student
-    } = useSession();
+    const student = useSessionStore((state) => state.student);
 
     const [semesters, setSemesters] = useState<StudentProgram[]>([])
 

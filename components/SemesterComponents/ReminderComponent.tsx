@@ -12,6 +12,7 @@ const ReminderComponent = () => {
       {
         examplePosts.map((val, ind) => (
           <PostsContiner
+            key={ind}
             postId={val.postId}
             author={val.author}
             postContent={ val.postContent}

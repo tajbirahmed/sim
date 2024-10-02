@@ -1,7 +1,7 @@
 "use client"; 
 
+import { useSessionStore } from '@/store/SessionStore';
 import React, { createContext, useEffect, useState } from 'react';
-import { useSession } from './SessionContext';
 
 interface Semester {
   semester: number;
@@ -27,9 +27,7 @@ export const SemesterProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const [semester, setSemester] = useState(1); 
   
-  const {
-    student
-  } = useSession(); 
+  const student = useSessionStore((state) => state.student);
 
   useEffect(() => {
     if (student) {

@@ -7,7 +7,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { SemesterProvider } from "@/contexts/SemesterContexts";
 import { SideBarProvider } from "@/contexts/SideBarContext";
 import { ProfileImageUrlProvider } from "@/contexts/ProfileImageContext";
-import { SessionProvider } from "@/contexts/SessionContext";
+
 
 const inter = Inter({ subsets: ["latin"] });
 // 1. font selection. 
@@ -20,6 +20,9 @@ export default function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+
+
+
     return (
         <html lang="en">
             <body className={inter.className}>
@@ -29,9 +32,7 @@ export default function RootLayout({
                     enableSystem
                     disableTransitionOnChange
                 >
-                    <SessionProvider>
                     <SideBarProvider>
-                        {/* <NavBar /> */}
                         <div className="flex flex-row">
                             <SideBar />
                             <SemesterProvider>
@@ -41,11 +42,8 @@ export default function RootLayout({
                             </SemesterProvider>
 
                         </div>
-                        </SideBarProvider>
-                    </SessionProvider>
-                    {/* <div className="flex-end">
-                    <FooterBar />
-                </div> */}
+                    </SideBarProvider>
+
                     <Toaster />
                 </ThemeProvider>
             </body>
