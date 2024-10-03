@@ -28,16 +28,14 @@ import { toast } from 'sonner';
 import { Card } from '@/components/ui/card';
 import { getAddress } from '@/util/getAddress';
 import { useAddressStore } from '@/store/AddressStore';
+import { useImageStore } from '@/store/ImageStore';
 
 
 
 
 const ViewProfile = () => {
 
-    const {
-        profileImageUrl,
-        setProfileImageUrl
-    } = useProfileImage();
+    const profileImageUrl = useImageStore((state) => state.image);
 
     const student = useSessionStore((state) => state.student);
     const cruuAddress = useAddressStore((state) => state.currentAddress);
@@ -105,7 +103,7 @@ const ViewProfile = () => {
             <div className='flex flex-col w-full h-full items-center'>
                 <div className='flex flex-row justify-between self-start items-center w-full h-auto'>
                     <div>
-                        {profileImageUrl === ''
+                        {profileImageUrl === null
                             ?
                             (
                                 <p>Error getting profile image</p>

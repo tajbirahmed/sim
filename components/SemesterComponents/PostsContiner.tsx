@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
+import { format } from 'date-fns';
 
 const PostsContiner = ({ 
     postId,
@@ -47,11 +48,7 @@ const PostsContiner = ({
                           { author}  
                     </p>
                     <p className="text-black dark:text-white font-normal text-[13px]">
-                          {postDate.toLocaleDateString('en-GB', {
-                              day: 'numeric',
-                              month: 'long',
-                              year: 'numeric'
-                          })}      
+                          {format(postDate, "PPP")}      
                     </p>  
                 </div>  
               </div>
